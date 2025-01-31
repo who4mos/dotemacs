@@ -1,0 +1,32 @@
+* Requirements
+
+The config relies on features that are built-in in ~emacs >= 29~ (use-package, tree-sitter, eglot, ...)
+
+There are a lot of packages required to build from source, in the next distro hopping session (or hopefully in a new computer) i'll write down all requirements.
+
+Besides that, the config requires:
+- [[https://github.com/source-foundry/Hack][Hack]] font
+- ~pyright~ and ~clangd~ language servers
+- ~tree-sitter~
+- ~cmake~, ~libtool~ and ~libvterm~ for vterm
+
+* Building from source
+
+Get the latest emacs version and install it:
+
+#+begin_src sh
+  git clone https://git.savannah.gnu.org/git/emacs.git
+  ./autogen.sh
+  ./configure --with-x-toolkit=lucid --with-imagemagick --with-tree-sitter --with-native-compilation=aot
+  make
+  make install
+#+end_src
+
+Then create the emacs config folder:
+
+#+begin_src sh
+  mkdir -p ~/.config/emacs
+#+end_src
+
+Then open the [[file:emacs.org][emacs.org]] file in emacs and tangle it (~C-c C-v C-t~)!
+

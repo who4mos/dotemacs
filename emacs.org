@@ -1,0 +1,334 @@
+#+AUTHOR: who4mos
+#+TITLE: My emacs config
+#+PROPERTY: header-args :tangle ~/.config/emacs/init.el
+#+STARTUP: overview
+
+* Packages setup
+
+Adds melpa to package archives.
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (require 'use-package)
+
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+#+end_src
+
+** Try packages!
+
+#+begin_src emacs-lisp
+  (use-package try
+    :ensure t)
+#+end_src
+
+* Orgmode
+
+#+begin_src emacs-lisp
+  (use-package org
+    :demand
+    :bind
+    ("C-c l" . org-store-link)
+    ("C-c a" . org-agenda)
+    ("C-c c" . org-capture)
+    :custom
+    (org-agenda-files '("~/org/todo.org"))
+    (org-log-done 'time)
+    (org-log-into-drawer t)
+    (org-hide-emphasis-markers t)
+    (org-special-ctrl-a/e t)
+    (org-special-ctrl-k t)
+    :hook
+    (org-mode . visual-line-mode))
+#+end_src
+
+* Better defaults
+
+Remove startup screen, remove bars and enable column numbers on mode line. Also change the typing behaviour when a region selected.
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :custom
+    (inhibit-startup-screen t)
+    :config
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (column-number-mode t)
+    (delete-selection-mode t))
+#+end_src
+
+* Theme and Font
+
+Set theme and font
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (add-to-list 'default-frame-alist
+  	       '(font . "Hack-11"))
+    :config
+    (load-theme 'modus-vivendi))
+#+end_src
+
+* Helpful information
+
+** Helpful
+
+[[https://github.com/Wilfred/helpful][Helpful]] is an alternative to emacs built-in help commands that provides more information.
+
+#+begin_src emacs-lisp
+  (use-package helpful
+    :ensure t
+    :bind
+    ([remap describe-function] . helpful-callable)
+    ([remap describe-variable] . helpful-variable)
+    ([remap describe-key] . helpful-key)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-symbol] . helpful-symbol)
+    )
+#+end_src
+
+** Whichkey
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode))
+#+end_src
+
+* Dired
+
+Set dired switches.
+
+#+begin_src emacs-lisp
+  (use-package dired
+    :custom
+    (dired-listing-switches "-al --group-directories-first"))
+#+end_src
+
+* Window Movement
+
+Unset ~C-x o~ and remap it to ~M-o~.
+
+#+begin_src emacs-lisp
+  (global-unset-key "\C-x\ o")
+  (global-set-key "\M-o" 'other-window)
+#+end_src
+
+** ace-window
+
+[[https://github.com/abo-abo/ace-window][ace-window]] provides an alternative to the built-in ~other window~ command.
+
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :bind
+    ([remap other-window] . ace-window))
+#+end_src
+
+* Navigation
+
+[[https://github.com/abo-abo/avy][avy]] allows you to jump to visible text using a char decision tree.
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :custom
+    (avy-timeout-seconds 0.3)
+    :bind
+    ("M-s" . avy-goto-char-timer))
+#+end_src
+
+* Minibuffer
+
+** Vertico
+
+Vertico provides a minimalist vertical completion UI based on the default completion system.
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :ensure t
+    :custom
+    (vertico-cycle t)
+    :init
+    (vertico-mode))
+#+end_src
+
+*** Marginalia
+
+[[https://github.com/minad/marginalia][Marginalia]] adds marginalia to minibuffer completions.
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :ensure t
+    :init
+    (marginalia-mode))
+#+end_src
+
+** Consult
+
+[[https://github.com/minad/consult][Consult]] provides search and navigation commands.
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :ensure t
+    :bind (
+    ([remap switch-to-buffer] . consult-buffer)
+    ([remap yank-pop] . consult-yank-pop)
+    ([remap goto-line] . consult-goto-line)
+    ([remap isearch-forward] . consult-line)
+    ([remap imenu] . consult-imenu)
+    ("C-c m" . consult-man)
+    ("C-c i" . consult-info)
+    ("M-g f" . consult-flymake)
+    :map org-mode-map
+    ([remap imenu] . consult-org-heading))    
+    )
+#+end_src
+
+* Completion
+
+** Completion style
+
+[[https://github.com/oantolin/orderless][Orderless]] provides an *orderless* completion style. It divides the pattern in space separated components and match candidates that match those components in any order.
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
+** Corfu
+
+[[https://github.com/minad/corfu][Corfu]] enhances in-buffer completion with a small popup.
+
+#+begin_src emacs-lisp
+  (use-package corfu
+    :ensure t
+    :custom
+    (corfu-cycle t)
+    (corfu-auto t)
+    (corfu-auto-prefix 2)
+    :init
+    (global-corfu-mode)
+    :config
+    (corfu-popupinfo-mode t))
+#+end_src
+
+*** Cape
+
+[[https://github.com/minad/cape][Cape]] provies Completion At Point Extensions.
+
+#+begin_src emacs-lisp
+  (use-package cape
+    :ensure t
+    :init
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    )
+#+end_src
+
+* Programming
+
+Setup line numbers and electric pairing in prog modes.
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :hook
+    (prog-mode . display-line-numbers-mode)
+    (prog-mode . electric-pair-mode))
+#+end_src
+
+** eglot
+
+[[https://github.com/joaotavora/eglot][Eglot]] is the emacs client for the LSP.
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :config
+    (add-to-list 'eglot-server-programs
+  	       '(python-ts-mode "pyright")
+  	       '((c-ts-mode c++-ts-mode) "clangd"))
+    :hook
+    (python-ts-mode . eglot-ensure)
+    (c-ts-mode . eglot-ensure)
+    (c++-ts-mode . eglot-ensure))
+#+end_src
+
+** tree-sitter
+
+[[https://tree-sitter.github.io/tree-sitter/][Tree-sitter]] is a parser generator tool and incremental parser lib. Since version 29 emacs can be built with tree sitter support.
+
+The code sets langugage grammars and major mode remaps for the langugages i use.
+
+#+begin_src emacs-lisp
+  (use-package treesit
+    :custom
+    (treesit-language-source-alist
+     '((python "https://github.com/tree-sitter/tree-sitter-python")
+       (c "https://github.com/tree-sitter/tree-sitter-c")
+       (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+
+    (major-mode-remap-alist
+     '((python-mode . python-ts-mode)
+       (c-mode . c-ts-mode)
+       (c++-mode . c++-ts-mode))))
+#+end_src
+
+This snippet can be evaluated to install all langugage grammars seted above, it will not be tangled to the ~init.el~ file.
+
+#+begin_src emacs-lisp :tangle no
+  (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+#+end_src
+
+*** Expreg
+
+[[https://elpa.gnu.org/packages/expreg.html][Expreg]] increases selected region by semantic units using tree-sitter.
+
+#+begin_src emacs-lisp
+  (use-package expreg
+    :ensure t
+    :bind
+    ("C-=" . expreg-expand))
+#+end_src
+
+** Indentation bars
+
+#+begin_src emacs-lisp
+  (use-package indent-bars
+    :ensure t
+    :custom
+    (indent-bars-treesit-support t)
+    :hook
+    ((c-ts-mode python-ts-mode) . indent-bars-mode))
+#+end_src
+
+* vterm
+
+[[https://github.com/akermu/emacs-libvterm][vterm]] is a fast and fully capable terminal emulator inside emacs.
+
+Requirements:
+- ~cmake~
+- ~libtool~
+- ~libvterm~
+
+#+begin_src emacs-lisp
+    (use-package vterm
+      :ensure t)
+#+end_src
+
+** multi vterm 
+
+[[https://github.com/suonlight/multi-vterm][multi-vterm]] allows you to manage multiple vterm instances.
+
+#+begin_src emacs-lisp
+  (use-package multi-vterm
+    :ensure t
+    :custom
+    (multi-vterm-dedicated-window-height-percent 30)
+    :bind
+    ("C-;" . multi-vterm-dedicated-toggle))
+#+end_src
+
