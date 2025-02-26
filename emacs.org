@@ -291,7 +291,8 @@ This snippet can be evaluated to install all langugage grammars seted above, it 
   (use-package expreg
     :ensure t
     :bind
-    ("C-=" . expreg-expand))
+    ("C-=" . expreg-expand)
+    ("C-+" . expreg-contract))
 #+end_src
 
 ** Indentation bars
