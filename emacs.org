@@ -41,6 +41,13 @@ Adds melpa to package archives.
     (org-mode . visual-line-mode))
 #+end_src
 
+* Magit
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t)
+#+end_src
+
 * Better defaults
 
 Remove startup screen, remove bars and enable column numbers on mode line. Also change the typing behaviour when a region selected.
