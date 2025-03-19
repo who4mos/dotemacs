@@ -130,7 +130,16 @@ Unset ~C-x o~ and remap it to ~M-o~.
   (use-package ace-window
     :ensure t
     :bind
-    ([remap other-window] . ace-window))
+    ([remap other-window] . ace-window)
+    :config
+    ;; unbind face-menu keymap in html buffers
+    (add-hook 'html-ts-mode-hook
+              (lambda ()
+                (local-unset-key (kbd "M-o")))))
+#+end_src
+
+#+begin_src emacs-lisp
+  
 #+end_src
 
 * Navigation
