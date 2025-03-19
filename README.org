@@ -34,4 +34,5 @@ Then open the [[file:emacs.org][emacs.org]] file in emacs and tangle it (~C-c C-
 - Python: ~pyright~
 - C: ~clangd~
 - Javascript: ~typescript-language-server~
+- HTML and CSS: ~vscode-langservers-extracted~
 

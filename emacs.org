@@ -267,9 +267,13 @@ Setup line numbers and electric pairing in prog modes.
     (add-to-list 'eglot-server-programs
   	       '(python-ts-mode "pyright")
   	       '((c-ts-mode c++-ts-mode) "clangd"))
-    
     (add-to-list 'eglot-server-programs
   	       '((js-ts-mode) "typescript-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs
+  	       '((html-ts-mode) "vscode-html-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs
+  	       '((html-ts-mode) "vscode-css-language-server" "--stdio"))
+    
     :hook
     (python-ts-mode . eglot-ensure)
     (c-ts-mode . eglot-ensure)
