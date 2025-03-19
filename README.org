@@ -6,7 +6,6 @@ There are a lot of packages required to build from source, in the next distro ho
 
 Besides that, the config requires:
 - [[https://github.com/source-foundry/Hack][Hack]] font
-- ~pyright~ and ~clangd~ language servers
 - ~tree-sitter~
 - ~cmake~, ~libtool~ and ~libvterm~ for vterm
 
@@ -29,4 +28,10 @@ Then create the emacs config folder:
 #+end_src
 
 Then open the [[file:emacs.org][emacs.org]] file in emacs and tangle it (~C-c C-v C-t~)!
+
+* Language servers
+
+- Python: ~pyright~
+- C: ~clangd~
+- Javascript: ~typescript-language-server~
 
