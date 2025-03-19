@@ -130,16 +130,7 @@ Unset ~C-x o~ and remap it to ~M-o~.
   (use-package ace-window
     :ensure t
     :bind
-    ([remap other-window] . ace-window)
-    :config
-    ;; unbind face-menu keymap in html buffers
-    (add-hook 'html-ts-mode-hook
-              (lambda ()
-                (local-unset-key (kbd "M-o")))))
-#+end_src
-
-#+begin_src emacs-lisp
-  
+    ([remap other-window] . ace-window))
 #+end_src
 
 * Navigation
@@ -302,6 +293,7 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
        (c-mode . c-ts-mode)
        (c++-mode . c++-ts-mode)
        (html-mode . html-ts-mode)
+       (mhtml-mode . html-ts-mode)
        (css-mode . css-ts-mode)
        (js-mode . js-ts-mode))))
 #+end_src
@@ -333,6 +325,25 @@ The following snippet can be evaluated to install all langugage grammars seted a
     (indent-bars-treesit-support t)
     :hook
     ((c-ts-mode python-ts-mode) . indent-bars-mode))
+#+end_src
+
+** Emmet
+
+[[https://github.com/smihica/emmet-mode][emmet-mode]] allows you to use emmet in emacs.
+
+#+begin_src emacs-lisp
+  (use-package emmet-mode
+    :ensure t
+    :hook
+    (html-ts-mode . emmet-mode))
+#+end_src
+
+** Unbind facemenu in html mode
+
+#+begin_src emacs-lisp
+  (add-hook 'html-ts-mode-hook
+            (lambda ()
+              (local-unset-key (kbd "M-o"))))
 #+end_src
 
 * vterm
