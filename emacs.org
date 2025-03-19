@@ -180,16 +180,16 @@ Vertico provides a minimalist vertical completion UI based on the default comple
   (use-package consult
     :ensure t
     :bind (
-    ([remap switch-to-buffer] . consult-buffer)
-    ([remap yank-pop] . consult-yank-pop)
-    ([remap goto-line] . consult-goto-line)
-    ([remap isearch-forward] . consult-line)
-    ([remap imenu] . consult-imenu)
-    ("C-c m" . consult-man)
-    ("C-c i" . consult-info)
-    ("M-g f" . consult-flymake)
-    :map org-mode-map
-    ([remap imenu] . consult-org-heading))    
+  	 ([remap switch-to-buffer] . consult-buffer)
+  	 ([remap yank-pop] . consult-yank-pop)
+  	 ([remap goto-line] . consult-goto-line)
+  	 ([remap isearch-forward] . consult-line)
+  	 ([remap imenu] . consult-imenu)
+  	 ("C-c m" . consult-man)
+  	 ("C-c i" . consult-info)
+  	 ("M-g f" . consult-flymake)
+  	 :map org-mode-map
+  	 ([remap imenu] . consult-org-heading))    
     )
 #+end_src
 
@@ -263,12 +263,14 @@ Setup line numbers and electric pairing in prog modes.
     (add-to-list 'eglot-server-programs
   	       '((html-ts-mode) "vscode-html-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
-  	       '((html-ts-mode) "vscode-css-language-server" "--stdio"))
+  	       '((css-ts-mode) "vscode-css-language-server" "--stdio"))
     
     :hook
     (python-ts-mode . eglot-ensure)
     (c-ts-mode . eglot-ensure)
-    (c++-ts-mode . eglot-ensure))
+    (c++-ts-mode . eglot-ensure)
+    (html-ts-mode . eglot-ensure)
+    (css-ts-mode . eglot-ensure))
 #+end_src
 
 ** tree-sitter
@@ -356,8 +358,8 @@ Requirements:
 - ~libvterm~
 
 #+begin_src emacs-lisp
-    (use-package vterm
-      :ensure t)
+  (use-package vterm
+    :ensure t)
 #+end_src
 
 ** multi vterm 
