@@ -270,7 +270,8 @@ Setup line numbers and electric pairing in prog modes.
     (c-ts-mode . eglot-ensure)
     (c++-ts-mode . eglot-ensure)
     (html-ts-mode . eglot-ensure)
-    (css-ts-mode . eglot-ensure))
+    (css-ts-mode . eglot-ensure)
+    (js-ts-mode . eglot-ensure))
 #+end_src
 
 ** tree-sitter
@@ -297,7 +298,8 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
        (html-mode . html-ts-mode)
        (mhtml-mode . html-ts-mode)
        (css-mode . css-ts-mode)
-       (js-mode . js-ts-mode))))
+       (js-mode . js-ts-mode)
+       (javascript-mode . js-ts-mode))))
 #+end_src
 
 The following snippet can be evaluated to install all langugage grammars seted above, it will not be tangled to the ~init.el~ file.
