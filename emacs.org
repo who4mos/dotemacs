@@ -256,7 +256,7 @@ Setup line numbers and electric pairing in prog modes.
   (use-package eglot
     :config
     (add-to-list 'eglot-server-programs
-  	       '(python-ts-mode "pyright")
+  	       '((python-ts-mode) "pyright")
   	       '((c-ts-mode c++-ts-mode) "clangd"))
     (add-to-list 'eglot-server-programs
   	       '((js-ts-mode) "typescript-language-server" "--stdio"))
@@ -264,6 +264,8 @@ Setup line numbers and electric pairing in prog modes.
   	       '((html-ts-mode) "vscode-html-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
   	       '((css-ts-mode) "vscode-css-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs
+  	       '((java-ts-mode) "~/src/jdtls/bin/jdtls"))
     
     :hook
     (python-ts-mode . eglot-ensure)
@@ -271,7 +273,8 @@ Setup line numbers and electric pairing in prog modes.
     (c++-ts-mode . eglot-ensure)
     (html-ts-mode . eglot-ensure)
     (css-ts-mode . eglot-ensure)
-    (js-ts-mode . eglot-ensure))
+    (js-ts-mode . eglot-ensure)
+    (java-ts-mode . eglot-ensure))
 #+end_src
 
 ** tree-sitter
@@ -289,7 +292,8 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
        (html "https://github.com/tree-sitter/tree-sitter-html")
        (css "https://github.com/tree-sitter/tree-sitter-css")
-       (javascript "https://github.com/tree-sitter/tree-sitter-javascript")))
+       (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
+       (java "https://github.com/tree-sitter/tree-sitter-java")))
 
     (major-mode-remap-alist
      '((python-mode . python-ts-mode)
@@ -299,7 +303,8 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
        (mhtml-mode . html-ts-mode)
        (css-mode . css-ts-mode)
        (js-mode . js-ts-mode)
-       (javascript-mode . js-ts-mode))))
+       (javascript-mode . js-ts-mode)
+       (java-mode . java-ts-mode))))
 #+end_src
 
 The following snippet can be evaluated to install all langugage grammars seted above, it will not be tangled to the ~init.el~ file.
