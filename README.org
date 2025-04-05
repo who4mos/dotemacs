@@ -5,7 +5,7 @@ The config relies on features that are built-in in ~emacs >= 29~ (use-package, t
 There are a lot of packages required to build from source, in the next distro hopping session (or hopefully in a new computer) i'll write down all requirements.
 
 Besides that, the config requires:
-- [[https://github.com/source-foundry/Hack][Hack]] font
+- [[https://www.nerdfonts.com/][Hack Nerd Font]]
 - ~tree-sitter~
 - ~cmake~, ~libtool~ and ~libvterm~ for vterm
 

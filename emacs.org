@@ -64,17 +64,28 @@ Remove startup screen, remove bars and enable column numbers on mode line. Also 
     (delete-selection-mode t))
 #+end_src
 
-* Theme and Font
+* Beautifying
 
-Set theme and font
+Set theme and font.
 
 #+begin_src emacs-lisp
   (use-package emacs
     :init
     (add-to-list 'default-frame-alist
-  	       '(font . "Hack-11"))
+  	       '(font . "Hack Nerd Font-11"))
     :config
     (load-theme 'modus-vivendi))
+#+end_src
+
+** nerd-icons
+
+[[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons]] allows you to use [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]] in emacs.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons
+    :ensure t
+    :custom
+    (nerd-icons-font-family "Hack Nerd Font"))
 #+end_src
 
 * Helpful information
@@ -111,6 +122,17 @@ Set dired switches.
   (use-package dired
     :custom
     (dired-listing-switches "-al --group-directories-first"))
+#+end_src
+
+** nerd-icons-dired
+
+[[https://github.com/rainstormstudio/nerd-icons-dired][nerd-icons-dired]] adds nerd icons to dired.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-dired
+    :ensure t
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
 #+end_src
 
 * Window Movement
@@ -170,6 +192,19 @@ Vertico provides a minimalist vertical completion UI based on the default comple
     :ensure t
     :init
     (marginalia-mode))
+#+end_src
+
+*** nerd-icons-completion
+
+[[https://github.com/rainstormstudio/nerd-icons-completion][nerd-icons-completion]] gives minibuffer completions nerd icons.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-completion
+    :ensure t
+    :after marginalia
+    :config
+    (nerd-icons-completion-mode)
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 #+end_src
 
 ** Consult
@@ -235,6 +270,17 @@ Vertico provides a minimalist vertical completion UI based on the default comple
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
     )
+#+end_src
+
+*** nerd-icons-corfu
+
+[[https://github.com/LuigiPiucco/nerd-icons-corfu][nerd-icons-corfu]] adds nerd icons to corfu completions.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-corfu
+    :ensure t
+    :init
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 #+end_src
 
 * Programming
