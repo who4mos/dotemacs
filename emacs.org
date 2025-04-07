@@ -31,7 +31,8 @@ Adds melpa to package archives.
     ("C-c a" . org-agenda)
     ("C-c c" . org-capture)
     :custom
-    (org-agenda-files '("~/org/todo.org"))
+    (org-agenda-files '("~/org/todo.org" "~/org/uff.org"))
+    (org-archive-location "~/org/archive.org::* From %s")
     (org-log-done 'time)
     (org-log-into-drawer t)
     (org-hide-emphasis-markers t)
