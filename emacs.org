@@ -429,3 +429,17 @@ Requirements:
     ("C-;" . multi-vterm-dedicated-toggle))
 #+end_src
 
+* edraw
+
+[[https://github.com/misohena/el-easydraw][Emacs Easy Draw]] is a drawing tool within emacs.
+
+#+begin_src emacs-lisp
+  (use-package edraw
+    :vc (:url "https://github.com/misohena/el-easydraw.git")
+    :after org
+    :config
+    (require 'edraw-org)
+    (edraw-org-setup-default)
+    :hook
+    (org-mode . edraw-org-link-image-mode))
+#+end_src
