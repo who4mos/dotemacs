@@ -5,7 +5,7 @@ The config relies on features that are built-in in ~emacs >= 29~ (use-package, t
 There are a lot of packages required to build from source, in the next distro hopping session (or hopefully in a new computer) i'll write down all requirements.
 
 Besides that, the config requires:
-- [[https://www.nerdfonts.com/][Hack Nerd Font]]
+- [[https://github.com/be5invis/Iosevka][Iosevka]], [[https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka][Iosevka Nerd]] and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] Fonts
 - ~tree-sitter~
 - ~cmake~, ~libtool~ and ~libvterm~ for vterm
 

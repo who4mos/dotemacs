@@ -3,6 +3,12 @@
 #+PROPERTY: header-args :tangle ~/.config/emacs/init.el
 #+STARTUP: overview
 
+* Lexical Binding
+
+#+begin_src emacs-lisp
+  ;;; -*- lexical-binding: t; -*-
+#+end_src
+
 * Packages setup
 
 Adds melpa to package archives.
@@ -19,6 +25,33 @@ Adds melpa to package archives.
 #+begin_src emacs-lisp
   (use-package try
     :ensure t)
+#+end_src
+
+* Beautifying
+
+Set default and fixed pitch fonts.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :font "Iosevka Extended" :height 120)
+  (set-face-attribute 'fixed-pitch nil :family "Iosevka Extended")
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package ef-themes
+    :ensure t
+    :init
+    (load-theme 'ef-elea-dark t))
+#+end_src
+
+** nerd-icons
+
+[[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons]] allows you to use [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]] in emacs.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons
+    :ensure t
+    :custom
+    (nerd-icons-font-family "Iosevka Nerd Font"))
 #+end_src
 
 * Orgmode
@@ -41,7 +74,30 @@ Adds melpa to package archives.
     (org-startup-with-inline-images t)
     (org-image-actual-width '(500))
     :hook
-    (org-mode . visual-line-mode))
+    (org-mode . visual-line-mode)
+    (org-mode . variable-pitch-mode))
+#+end_src
+
+Set variable pitch fonts and ensure fixed pitch is used where needed.
+
+#+begin_src emacs-lisp
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
 #+end_src
 
 * Magit
@@ -65,30 +121,6 @@ Remove startup screen, remove bars and enable column numbers on mode line. Also 
     (scroll-bar-mode -1)
     (column-number-mode t)
     (delete-selection-mode t))
-#+end_src
-
-* Beautifying
-
-Set theme and font.
-
-#+begin_src emacs-lisp
-  (use-package emacs
-    :init
-    (add-to-list 'default-frame-alist
-  	       '(font . "Hack Nerd Font-11"))
-    :config
-    (load-theme 'modus-vivendi))
-#+end_src
-
-** nerd-icons
-
-[[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons]] allows you to use [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]] in emacs.
-
-#+begin_src emacs-lisp
-  (use-package nerd-icons
-    :ensure t
-    :custom
-    (nerd-icons-font-family "Hack Nerd Font"))
 #+end_src
 
 * Helpful information
@@ -259,7 +291,8 @@ Vertico provides a minimalist vertical completion UI based on the default comple
     :init
     (global-corfu-mode)
     :config
-    (corfu-popupinfo-mode t))
+    (corfu-popupinfo-mode t)
+    (set-face-attribute 'corfu-default nil :inherit 'fixed-pitch))
 #+end_src
 
 *** Cape
