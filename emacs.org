@@ -1,46 +1,82 @@
-#+AUTHOR: who4mos
-#+TITLE: My emacs config
-#+PROPERTY: header-args :tangle ~/.config/emacs/init.el
-#+STARTUP: overview
+#+author: who4mos
+#+title: My emacs config
+#+property: header-args :tangle ~/.config/emacs/init.el
+#+startup: overview
 
 * Lexical Binding
 
+Use [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Selecting-Lisp-Dialect.html][lexical binding]].
+
 #+begin_src emacs-lisp
-  ;;; -*- lexical-binding: t; -*-
+  ;;; -*- lexical-binding: t -*-
+#+end_src
+
+* Better defaults
+
+Inhibit startup screen.
+
+#+begin_src emacs-lisp
+  (setopt inhibit-startup-screen t)
+#+end_src
+
+Remove bars.
+
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+#+end_src
+
+Enable column numbers on mode line, change the typing behaviour when a region is selected and remember recently opened files.
+
+#+begin_src emacs-lisp
+  (column-number-mode t)
+  (delete-selection-mode t)
+  (recentf-mode t)
+#+end_src
+
+Enable ~file-name-shadow-mode~.
+
+#+begin_src emacs-lisp
+  (file-name-shadow-mode t)
 #+end_src
 
 * Packages setup
 
-Adds melpa to package archives.
+Adds melpa to package archives and require [[https://github.com/jwiegley/use-package][use-package]].
 
 #+begin_src emacs-lisp
   (require 'package)
-  (require 'use-package)
-
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+  (require 'use-package)
 #+end_src
 
 ** Try packages!
 
+[[http://github.com/larstvei/try][try]] allows you to /try/ emacs packages without installing them.
+
 #+begin_src emacs-lisp
   (use-package try
-    :ensure t)
+    :ensure t
+    :defer t)
 #+end_src
 
 * Beautifying
 
-Set default and fixed pitch fonts.
+Set font.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Iosevka Extended" :height 120)
-  (set-face-attribute 'fixed-pitch nil :family "Iosevka Extended")
+  (set-face-attribute 'default nil :font "Hack" :height 120)
 #+end_src
+
+Set theme.
 
 #+begin_src emacs-lisp
   (use-package ef-themes
     :ensure t
     :init
-    (load-theme 'ef-elea-dark t))
+    (load-theme 'ef-owl t))
 #+end_src
 
 ** nerd-icons
@@ -51,76 +87,93 @@ Set default and fixed pitch fonts.
   (use-package nerd-icons
     :ensure t
     :custom
-    (nerd-icons-font-family "Iosevka Nerd Font"))
+    (nerd-icons-font-family "Hack Nerd Font"))
+#+end_src
+
+[[https://github.com/rainstormstudio/nerd-icons-dired][nerd-icons-dired]] adds nerd icons to [[* Dired][dired]].
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-dired
+    :ensure t
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
+#+end_src
+
+[[https://github.com/rainstormstudio/nerd-icons-completion][nerd-icons-completion]] gives minibuffer completions nerd icons.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-completion
+    :ensure t
+    :after marginalia
+    :config
+    (nerd-icons-completion-mode)
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+#+end_src
+
+[[https://github.com/LuigiPiucco/nerd-icons-corfu][nerd-icons-corfu]] adds nerd icons to [[* Corfu][corfu]] completions.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-corfu
+    :ensure t
+    :after corfu
+    :init
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 #+end_src
 
 * Orgmode
 
 #+begin_src emacs-lisp
   (use-package org
-    :demand
     :bind
     ("C-c l" . org-store-link)
     ("C-c a" . org-agenda)
     ("C-c c" . org-capture)
     :custom
-    (org-agenda-files '("~/org/todo.org" "~/org/uff.org"))
-    (org-archive-location "~/org/archive.org::* From %s")
+    ;; agenda
+    (org-directory "~/org/")
+    (org-agenda-files (list org-directory))
     (org-log-done 'time)
     (org-log-into-drawer t)
-    (org-hide-emphasis-markers t)
+    ;; tags
+    (org-tags-column 0)
+    (org-auto-align-tags nil)
+    ;; archive
+    (org-archive-location "~/org/archive/%s_archive::")
+    ;; structural editing
     (org-special-ctrl-a/e t)
     (org-special-ctrl-k t)
+    ;; style
+    (org-hide-emphasis-markers t)
+    ;; images
     (org-startup-with-inline-images t)
     (org-image-actual-width '(500))
     :hook
-    (org-mode . visual-line-mode)
-    (org-mode . variable-pitch-mode))
+    (org-mode . visual-line-mode))
 #+end_src
 
-Set variable pitch fonts and ensure fixed pitch is used where needed.
+** olivetti
+
+[[https://github.com/rnkn/olivetti][olivetti]] keeps text in the middle of the window.
 
 #+begin_src emacs-lisp
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
-
-  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+  (use-package olivetti
+    :ensure t
+    :custom
+    (olivetti-body-width 0.7)
+    (olivetti-minimum-body-width 80)
+    :hook
+    (org-mode . olivetti-mode))
 #+end_src
 
 * Magit
 
+[[https://github.com/magit/magit][magit]] is a git interface inside emacs.
+
 #+begin_src emacs-lisp
   (use-package magit
-    :ensure t)
-#+end_src
-
-* Better defaults
-
-Remove startup screen, remove bars and enable column numbers on mode line. Also change the typing behaviour when a region selected.
-
-#+begin_src emacs-lisp
-  (use-package emacs
-    :custom
-    (inhibit-startup-screen t)
-    :config
-    (menu-bar-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
-    (column-number-mode t)
-    (delete-selection-mode t))
+    :ensure t
+    :bind
+    ("C-x g" . magit-status))
 #+end_src
 
 * Helpful information
@@ -137,11 +190,12 @@ Remove startup screen, remove bars and enable column numbers on mode line. Also 
     ([remap describe-variable] . helpful-variable)
     ([remap describe-key] . helpful-key)
     ([remap describe-command] . helpful-command)
-    ([remap describe-symbol] . helpful-symbol)
-    )
+    ([remap describe-symbol] . helpful-symbol))
 #+end_src
 
-** Whichkey
+** which-key
+
+~which-key~ display key bindings following your current prefix command, it is now (emacs >= 30.1) built-in.
 
 #+begin_src emacs-lisp
   (use-package which-key
@@ -155,19 +209,9 @@ Set dired switches.
 
 #+begin_src emacs-lisp
   (use-package dired
+    :defer t
     :custom
-    (dired-listing-switches "-al --group-directories-first"))
-#+end_src
-
-** nerd-icons-dired
-
-[[https://github.com/rainstormstudio/nerd-icons-dired][nerd-icons-dired]] adds nerd icons to dired.
-
-#+begin_src emacs-lisp
-  (use-package nerd-icons-dired
-    :ensure t
-    :hook
-    (dired-mode . nerd-icons-dired-mode))
+    (dired-listing-switches "-lAFhv --group-directories-first"))
 #+end_src
 
 * Window Movement
@@ -175,8 +219,10 @@ Set dired switches.
 Unset ~C-x o~ and remap it to ~M-o~.
 
 #+begin_src emacs-lisp
-  (global-unset-key "\C-x\ o")
-  (global-set-key "\M-o" 'other-window)
+  (use-package emacs
+    :bind
+    ("C-x o" . nil)
+    ("M-o" . other-window))
 #+end_src
 
 ** ace-window
@@ -207,7 +253,7 @@ Unset ~C-x o~ and remap it to ~M-o~.
 
 ** Vertico
 
-Vertico provides a minimalist vertical completion UI based on the default completion system.
+[[https://github.com/minad/vertico][Vertico]] provides a minimalist vertical completion UI based on the default completion system.
 
 #+begin_src emacs-lisp
   (use-package vertico
@@ -229,26 +275,14 @@ Vertico provides a minimalist vertical completion UI based on the default comple
     (marginalia-mode))
 #+end_src
 
-*** nerd-icons-completion
-
-[[https://github.com/rainstormstudio/nerd-icons-completion][nerd-icons-completion]] gives minibuffer completions nerd icons.
-
-#+begin_src emacs-lisp
-  (use-package nerd-icons-completion
-    :ensure t
-    :after marginalia
-    :config
-    (nerd-icons-completion-mode)
-    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
-#+end_src
-
-** Consult
+* Consult
 
 [[https://github.com/minad/consult][Consult]] provides search and navigation commands.
 
 #+begin_src emacs-lisp
   (use-package consult
     :ensure t
+    :after org
     :bind (
   	 ([remap switch-to-buffer] . consult-buffer)
   	 ([remap yank-pop] . consult-yank-pop)
@@ -259,8 +293,7 @@ Vertico provides a minimalist vertical completion UI based on the default comple
   	 ("C-c i" . consult-info)
   	 ("M-g f" . consult-flymake)
   	 :map org-mode-map
-  	 ([remap imenu] . consult-org-heading))    
-    )
+  	 ([remap imenu] . consult-org-heading)))
 #+end_src
 
 * Completion
@@ -285,14 +318,15 @@ Vertico provides a minimalist vertical completion UI based on the default comple
   (use-package corfu
     :ensure t
     :custom
+    (tab-always-indent 'complete)
     (corfu-cycle t)
     (corfu-auto t)
     (corfu-auto-prefix 2)
+    (corfu-popupinfo-delay '(1.25 . 0.5))
     :init
     (global-corfu-mode)
     :config
-    (corfu-popupinfo-mode t)
-    (set-face-attribute 'corfu-default nil :inherit 'fixed-pitch))
+    (corfu-popupinfo-mode t))
 #+end_src
 
 *** Cape
@@ -304,19 +338,7 @@ Vertico provides a minimalist vertical completion UI based on the default comple
     :ensure t
     :init
     (add-to-list 'completion-at-point-functions #'cape-file)
-    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-    )
-#+end_src
-
-*** nerd-icons-corfu
-
-[[https://github.com/LuigiPiucco/nerd-icons-corfu][nerd-icons-corfu]] adds nerd icons to corfu completions.
-
-#+begin_src emacs-lisp
-  (use-package nerd-icons-corfu
-    :ensure t
-    :init
-    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block))
 #+end_src
 
 * Programming
@@ -348,7 +370,6 @@ Setup line numbers and electric pairing in prog modes.
   	       '((css-ts-mode) "vscode-css-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
   	       '((java-ts-mode) "~/src/jdtls/bin/jdtls"))
-    
     :hook
     (python-ts-mode . eglot-ensure)
     (c-ts-mode . eglot-ensure)
@@ -361,7 +382,7 @@ Setup line numbers and electric pairing in prog modes.
 
 ** tree-sitter
 
-[[https://tree-sitter.github.io/tree-sitter/][Tree-sitter]] is a parser generator tool and incremental parser lib. Since version 29 emacs can be built with tree sitter support.
+[[https://tree-sitter.github.io/tree-sitter/][Tree-sitter]] is a parser generator tool and incremental parser lib. Since version 29, emacs can be built with tree sitter support.
 
 The snippet sets langugage grammars and major mode remaps for the langugages i use.
 
@@ -400,7 +421,7 @@ The following snippet can be evaluated to install all langugage grammars seted a
 [[https://elpa.gnu.org/packages/expreg.html][Expreg]] increases selected region by semantic units using tree-sitter.
 
 #+begin_src emacs-lisp
-  (use-package expreg
+(use-package expreg
     :ensure t
     :bind
     ("C-=" . expreg-expand)
@@ -409,13 +430,15 @@ The following snippet can be evaluated to install all langugage grammars seted a
 
 ** Indentation bars
 
+[[https://github.com/jdtsmith/indent-bars][indent-bars]] provides indentation guide bars with tree-sitter support.
+
 #+begin_src emacs-lisp
   (use-package indent-bars
     :ensure t
     :custom
     (indent-bars-treesit-support t)
     :hook
-    ((c-ts-mode python-ts-mode) . indent-bars-mode))
+    ((python-ts-mode c-ts-mode c++-ts-mode html-ts-mode css-ts-mode js-ts-mode java-ts-mode) . indent-bars-mode))
 #+end_src
 
 ** Emmet
@@ -423,18 +446,21 @@ The following snippet can be evaluated to install all langugage grammars seted a
 [[https://github.com/smihica/emmet-mode][emmet-mode]] allows you to use emmet in emacs.
 
 #+begin_src emacs-lisp
-  (use-package emmet-mode
-    :ensure t
-    :hook
-    (html-ts-mode . emmet-mode))
+   (use-package emmet-mode
+     :ensure t
+     :hook
+     (html-ts-mode . emmet-mode))
 #+end_src
 
-** Unbind facemenu in html mode
+** "Rebind" ace-window in html-ts-mode
+
+By default, in html buffers ~M-o~ is binded to ~font-lock-fontify-block~, change it.
 
 #+begin_src emacs-lisp
-  (add-hook 'html-ts-mode-hook
-            (lambda ()
-              (local-unset-key (kbd "M-o"))))
+  (use-package html-ts-mode
+    :bind (
+  	 :map html-ts-mode-map
+  	      ("M-o" . ace-window)))
 #+end_src
 
 * vterm
@@ -463,4 +489,3 @@ Requirements:
     :bind
     ("C-;" . multi-vterm-dedicated-toggle))
 #+end_src
-

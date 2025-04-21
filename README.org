@@ -1,11 +1,11 @@
 * Requirements
 
-The config relies on features that are built-in in ~emacs >= 29~ (use-package, tree-sitter, eglot, ...)
+The config relies on features that are built-in in ~emacs >= 29~ (use-package, tree-sitter, eglot, ... ([[file:emacs.org::*which-key][which-key]] in ~emacs >= 30.1~))
 
-There are a lot of packages required to build from source, in the next distro hopping session (or hopefully in a new computer) i'll write down all requirements.
+There are a lot of packages required to build from source, in the next distro hopping session (or hopefully in a new computer) i'll write down all requirements. 
 
 Besides that, the config requires:
-- [[https://github.com/be5invis/Iosevka][Iosevka]], [[https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka][Iosevka Nerd]] and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] Fonts
+- [[https://github.com/source-foundry/Hack][Hack]] and [[https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack][Hack Nerd]] Fonts
 - ~tree-sitter~
 - ~cmake~, ~libtool~ and ~libvterm~ for vterm
 
@@ -16,7 +16,7 @@ Get the latest emacs version and install it:
 #+begin_src sh
   git clone https://git.savannah.gnu.org/git/emacs.git
   ./autogen.sh
-  ./configure --with-x-toolkit=lucid --with-imagemagick --with-tree-sitter --with-native-compilation=aot
+  ./configure --with-imagemagick --with-tree-sitter --with-native-compilation=aot
   make
   make install
 #+end_src
