@@ -67,7 +67,7 @@ Adds melpa to package archives and require [[https://github.com/jwiegley/use-pac
 Set font.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Hack" :height 120)
+  (set-face-attribute 'default nil :font "Hack Nerd Font" :height 120)
 #+end_src
 
 Set theme.
@@ -341,6 +341,10 @@ Unset ~C-x o~ and remap it to ~M-o~.
     (global-corfu-mode)
     :config
     (corfu-popupinfo-mode t))
+#+end_src
+
+#+begin_src emacs-lisp
+  (setopt text-mode-ispell-word-completion nil)
 #+end_src
 
 *** Cape
