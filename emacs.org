@@ -408,24 +408,33 @@ Setup line numbers and electric pairing in prog modes.
   (use-package eglot
     :config
     (add-to-list 'eglot-server-programs
-  	       '((python-ts-mode) "pyright")
-  	       '((c-ts-mode c++-ts-mode) "clangd"))
+  	           '((python-ts-mode) "pyright")
+  	           '((c-ts-mode c++-ts-mode) "clangd"))
     (add-to-list 'eglot-server-programs
-  	       '((js-ts-mode) "typescript-language-server" "--stdio"))
+  	           '((js-ts-mode) "typescript-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
-  	       '((html-ts-mode) "vscode-html-language-server" "--stdio"))
+  	           '((html-ts-mode) "vscode-html-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
-  	       '((css-ts-mode) "vscode-css-language-server" "--stdio"))
-    (add-to-list 'eglot-server-programs
-  	       '((java-ts-mode) "~/src/jdtls/bin/jdtls"))
+  	           '((css-ts-mode) "vscode-css-language-server" "--stdio"))
     :hook
     (python-ts-mode . eglot-ensure)
     (c-ts-mode . eglot-ensure)
     (c++-ts-mode . eglot-ensure)
     (html-ts-mode . eglot-ensure)
     (css-ts-mode . eglot-ensure)
-    (js-ts-mode . eglot-ensure)
-    (java-ts-mode . eglot-ensure))
+    (js-ts-mode . eglot-ensure))
+#+end_src
+
+*** eglot-java
+
+
+[[https://github.com/yveszoundi/eglot-java][eglot-java]] automatically sets up the Eclipse JDT language server.
+
+#+begin_src emacs-lisp
+  (use-package eglot-java
+    :ensure t
+    :hook
+    (java-ts-mode . eglot-java-mode))
 #+end_src
 
 ** tree-sitter
