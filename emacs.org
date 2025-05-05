@@ -41,6 +41,13 @@ Enable ~file-name-shadow-mode~.
   (file-name-shadow-mode t)
 #+end_src
 
+Always use tabs.
+
+#+begin_src emacs-lisp
+  (setopt indent-tabs-mode nil)
+  (setopt tab-width 4)
+#+end_src
+
 * Packages setup
 
 Adds melpa to package archives and require [[https://github.com/jwiegley/use-package][use-package]].
