@@ -17,6 +17,7 @@ Inhibit startup screen.
 
 #+begin_src emacs-lisp
   (setopt inhibit-startup-screen t)
+  (setopt initial-scratch-message "")
 #+end_src
 
 Remove bars.
