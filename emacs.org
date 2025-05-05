@@ -185,6 +185,7 @@ Set theme.
 #+begin_src emacs-lisp
   (use-package olivetti
     :ensure t
+    :diminish
     :custom
     (olivetti-body-width 0.7)
     (olivetti-minimum-body-width 80)
