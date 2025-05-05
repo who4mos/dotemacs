@@ -180,6 +180,7 @@ Set theme.
 #+begin_src emacs-lisp
   (use-package magit
     :ensure t
+    :commands (magit-status)
     :bind
     ("C-x g" . magit-status))
 #+end_src
