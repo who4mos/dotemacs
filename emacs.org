@@ -137,6 +137,14 @@ Set theme.
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 #+end_src
 
+[[https://github.com/seagle0128/nerd-icons-ibuffer][nerd-icons-ibuffer]] display nerd icons in ibuffer.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-ibuffer
+    :ensure t
+    :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+#+end_src
+
 * Orgmode
 
 #+begin_src emacs-lisp
@@ -251,24 +259,24 @@ Set dired switches.
 
 * Window Movement
 
-Unset ~C-x o~ and remap it to ~M-o~.
-
-#+begin_src emacs-lisp
-  (use-package emacs
-    :bind
-    ("C-x o" . nil)
-    ("M-o" . other-window))
-#+end_src
-
-** ace-window
-
-[[https://github.com/abo-abo/ace-window][ace-window]] provides an alternative to the built-in ~other window~ command.
+Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][ace-window]] to ~M-o~.
 
 #+begin_src emacs-lisp
   (use-package ace-window
     :ensure t
     :bind
-    ([remap other-window] . ace-window))
+    ("C-x o" . nil)
+    ("M-o" . ace-window))
+#+end_src
+
+* Ibuffer
+
+#+begin_src emacs-lisp
+  (use-package ibuffer
+    :bind (
+           ("C-x C-b" . ibuffer)
+           :map ibuffer-mode-map
+           ("M-o" . ace-window)))
 #+end_src
 
 * Navigation
