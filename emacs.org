@@ -70,6 +70,15 @@ Adds melpa to package archives and require [[https://github.com/jwiegley/use-pac
     :defer t)
 #+end_src
 
+** diminish
+
+[[https://github.com/emacsmirror/diminish][diminish]] allows you to keep a mode working but not showing in the modeline.
+
+#+begin_src emacs-lisp
+  (use-package diminish
+    :ensure t)
+#+end_src
+
 * Beautifying
 
 Set font.
@@ -157,6 +166,8 @@ Set theme.
     (org-image-actual-width '(500))
     :hook
     (org-mode . visual-line-mode))
+
+  (diminish 'visual-line-mode)
 #+end_src
 
 ** olivetti
@@ -185,7 +196,7 @@ Set theme.
     ("C-x g" . magit-status))
 #+end_src
 
-* Helpful information
+* Helpful Information
 
 ** Helpful
 
@@ -208,6 +219,7 @@ Set theme.
 
 #+begin_src emacs-lisp
   (use-package which-key
+    :diminish
     :config
     (which-key-mode))
 #+end_src
