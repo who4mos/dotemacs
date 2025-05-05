@@ -406,6 +406,9 @@ Setup line numbers and electric pairing in prog modes.
 
 #+begin_src emacs-lisp
   (use-package eglot
+    :custom
+    (completion-category-overrides '((eglot (styles orderless))
+                                     (eglot-capf (styles orderless))))
     :config
     (add-to-list 'eglot-server-programs
   	           '((python-ts-mode) "pyright")
@@ -518,6 +521,37 @@ By default, in html buffers ~M-o~ is binded to ~font-lock-fontify-block~, change
     :bind (
   	 :map html-ts-mode-map
   	      ("M-o" . ace-window)))
+#+end_src
+
+* Tempel
+
+[[https://github.com/minad/tempel][TempEl]] is a tiny template system for emacs.
+
+#+begin_src emacs-lisp
+  (use-package tempel
+    :ensure t
+    :bind (
+           :map tempel-map
+                ("TAB" . tempel-next)
+                ([tab] . tempel-next)
+                ("S-TAB" . tempel-previous)
+                ([backtab] . tempel-previous)
+                ("M-RET" . tempel-done))
+    :init
+    (defun tempel-setup-capf ()
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand
+                        completion-at-point-functions)))
+    
+    (defun my/eglot-capf ()
+      (setq-local completion-at-point-functions
+                  (list (cape-capf-super
+                         #'tempel-expand
+                         #'eglot-completion-at-point
+                         #'cape-file))))
+
+    (add-hook 'prog-mode-hook 'tempel-setup-capf)
+    (add-hook 'eglot-managed-mode-hook #'my/eglot-capf))
 #+end_src
 
 * vterm
