@@ -145,6 +145,16 @@ Set theme.
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 #+end_src
 
+** emojis
+
+Set emoji font, can be used with ~cape-emoji~.
+
+#+begin_src emacs-lisp
+  (when (member "Noto Color Emoji" (font-family-list))
+    (set-fontset-font
+     t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
+#+end_src
+
 * Orgmode
 
 #+begin_src emacs-lisp

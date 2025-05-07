@@ -6,6 +6,7 @@ There are a lot of packages required to build from source, in the next distro ho
 
 Besides that, the config requires:
 - [[https://github.com/source-foundry/Hack][Hack]] and [[https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack][Hack Nerd]] Fonts
+- [[https://fonts.google.com/noto/specimen/Noto+Color+Emoji][Noto Color Emoji]] Font (emojis 🥳)
 - ~tree-sitter~
 - ~cmake~, ~libtool~ and ~libvterm~ for vterm
 
