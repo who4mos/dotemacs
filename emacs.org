@@ -456,6 +456,8 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
 #+begin_src emacs-lisp
   (use-package treesit
     :custom
+    (treesit-font-lock-level 4)
+    
     (treesit-language-source-alist
      '((python "https://github.com/tree-sitter/tree-sitter-python")
        (c "https://github.com/tree-sitter/tree-sitter-c")
