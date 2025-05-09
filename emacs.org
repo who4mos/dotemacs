@@ -377,14 +377,11 @@ Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][
     (corfu-auto t)
     (corfu-auto-prefix 2)
     (corfu-popupinfo-delay '(1.25 . 0.5))
+    (text-mode-ispell-word-completion nil)
     :init
     (global-corfu-mode)
     :config
     (corfu-popupinfo-mode t))
-#+end_src
-
-#+begin_src emacs-lisp
-  (setopt text-mode-ispell-word-completion nil)
 #+end_src
 
 *** Cape
