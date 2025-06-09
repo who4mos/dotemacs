@@ -1,4 +1,9 @@
-* Requirements
+#+author: who4mos
+#+title: My dotfiles
+
+* Emacs
+
+** Requirements
 
 The config relies on features that are built-in in ~emacs >= 29~ (use-package, tree-sitter, eglot, ... ([[file:emacs.org::*which-key][which-key]] in ~emacs >= 30.1~))
 
@@ -10,7 +15,7 @@ Besides that, the config requires:
 - ~tree-sitter~
 - ~cmake~, ~libtool~ and ~libvterm~ for vterm
 
-* Building from source
+** Building from source
 
 Get the latest emacs version and install it:
 
@@ -30,10 +35,49 @@ Then create the emacs config folder:
 
 Then open the [[file:emacs.org][emacs.org]] file in emacs and tangle it (~C-c C-v C-t~)!
 
-* Language servers
+** Language servers
 
 - Python: ~pyright~
 - C: ~clangd~
 - Javascript: ~typescript-language-server~
 - HTML and CSS: ~vscode-langservers-extracted~
 - Java: ~jdtls~
+
+* BSPWM
+
+[[https://github.com/baskerville/bspwm][bspwm]] is a window manager that represents windows as leaves of a full binary search tree.
+
+The entire setup needs the following packages:
+- ~bspwm~
+- ~sxhkd~
+- ~dmenu~
+- ~polybar~
+
+  
+The bspwm configuration is stored in ~/.config/bspwm/bspwmrc~, you need to create that directory if it doesn't exist yet, link the ~bspwmrc~ script to the right location, and change its permissions:
+
+#+begin_src sh
+  mkdir -p ~/.config/bspwm
+  ln -s ~/.dotfiles/bspwmrc ~/.config/bspwm/bspwmrc
+  chmod +x ~/.config/bspwm/bspwmrc
+#+end_src
+
+** sxhkd
+
+[[https://github.com/baskerville/sxhkd][sxhkd]] handles input for bspwm, the configuaration file is stored in ~/.config/sxhkd/sxhkdrc~, you also need to create the directory and link the configuartion file.
+
+#+begin_src sh
+  mkdir -p ~/.config/sxhkd
+  ln -s ~/.dotfiles/sxhkdrc ~/.config/sxhkd/sxhkdrc
+#+end_src
+
+** polybar
+
+polybar is an easy to configure status bar.
+
+The *polybar* directory in this repo contains the configuation file ([[file:polybar/config.ini][config.ini]]) and the launch script ([[file:polybar/launch.sh][launch.sh]]) that is called inside BSPWM's config file. You need to link the directory to ~~/.config/polybar~ and change permissions to execute the script.
+
+#+begin_src sh
+  ln -s ~/.dotfiles/polybar ~/.config/polybar
+  chmod +x ~/.config/polybar/launch.sh
+#+end_src
