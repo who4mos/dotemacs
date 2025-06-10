@@ -10,7 +10,7 @@ HDMI_MONITOR="HDMI-0"
 if xrandr -q | grep "$HDMI_MONITOR connected"; then
     xrandr --output "$HDMI_MONITOR" --auto --primary
     xrandr --output "$LAPTOP_MONITOR" --off
-    bspc monitor "$HDMI_MONITOR" -d 0 1 2 3 4 5 6 7 8 9
+    bspc monitor "$HDMI_MONITOR" -d 1 2 3 4 5 6 7 8 9 0
 else
     xrandr --output "$LAPTOP_MONITOR" --auto --primary
     xrandr --output "$HDMI_MONITOR" --off

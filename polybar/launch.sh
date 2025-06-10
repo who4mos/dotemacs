@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-killall -q polybar
+polybar-msg cmd quit
 
-polybar main &
+polybar main 2>&1 | tee -a /tmp/polybar.log & disown

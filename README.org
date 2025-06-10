@@ -73,7 +73,7 @@ The bspwm configuration is stored in ~/.config/bspwm/bspwmrc~, you need to creat
 
 ** polybar
 
-polybar is an easy to configure status bar.
+[[https://github.com/polybar/polybar][polybar]] is an easy to configure status bar.
 
 The *polybar* directory in this repo contains the configuation file ([[file:polybar/config.ini][config.ini]]) and the launch script ([[file:polybar/launch.sh][launch.sh]]) that is called inside BSPWM's config file. You need to link the directory to ~~/.config/polybar~ and change permissions to execute the script.
 
