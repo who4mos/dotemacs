@@ -589,3 +589,11 @@ Requirements:
     :bind
     ("C-;" . multi-vterm-dedicated-toggle))
 #+end_src
+
+* sxhkdrc
+
+#+begin_src emacs-lisp
+  (use-package sxhkdrc-mode
+    :ensure t
+    :mode "sxhkdrc")
+#+end_src
