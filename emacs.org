@@ -11,6 +11,36 @@ Use [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Selecting-Lisp-D
   ;;; -*- lexical-binding: t -*-
 #+end_src
 
+* Packages setup
+
+Adds melpa to package archives and require [[https://github.com/jwiegley/use-package][use-package]].
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+  (require 'use-package)
+#+end_src
+
+** Try packages!
+
+[[http://github.com/larstvei/try][try]] allows you to /try/ emacs packages without installing them.
+
+#+begin_src emacs-lisp
+  (use-package try
+    :ensure t
+    :defer t)
+#+end_src
+
+** diminish
+
+[[https://github.com/emacsmirror/diminish][diminish]] allows you to keep a mode working but not showing in the modeline.
+
+#+begin_src emacs-lisp
+  (use-package diminish
+    :ensure t)
+#+end_src
+
 * Better defaults
 
 Change startup screen.
@@ -49,36 +79,6 @@ Always use tabs.
   (setopt tab-width 4)
 #+end_src
 
-* Packages setup
-
-Adds melpa to package archives and require [[https://github.com/jwiegley/use-package][use-package]].
-
-#+begin_src emacs-lisp
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-
-  (require 'use-package)
-#+end_src
-
-** Try packages!
-
-[[http://github.com/larstvei/try][try]] allows you to /try/ emacs packages without installing them.
-
-#+begin_src emacs-lisp
-  (use-package try
-    :ensure t
-    :defer t)
-#+end_src
-
-** diminish
-
-[[https://github.com/emacsmirror/diminish][diminish]] allows you to keep a mode working but not showing in the modeline.
-
-#+begin_src emacs-lisp
-  (use-package diminish
-    :ensure t)
-#+end_src
-
 * Beautifying
 
 Set font.
@@ -90,10 +90,10 @@ Set font.
 Set theme.
 
 #+begin_src emacs-lisp
-  (use-package ef-themes
+  (use-package adwaita-dark-theme
     :ensure t
     :init
-    (load-theme 'ef-owl t))
+    (load-theme 'adwaita-dark t))
 #+end_src
 
 ** nerd-icons
