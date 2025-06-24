@@ -13,7 +13,7 @@ Use [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Selecting-Lisp-D
 
 * Better defaults
 
-Inhibit startup screen.
+Change startup screen.
 
 #+begin_src emacs-lisp
   (setopt inhibit-startup-screen t)
@@ -336,18 +336,21 @@ Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][
 #+begin_src emacs-lisp
   (use-package consult
     :ensure t
+    :bind 
+    ([remap switch-to-buffer] . consult-buffer)
+    ([remap yank-pop] . consult-yank-pop)
+    ([remap goto-line] . consult-goto-line)
+    ([remap isearch-forward] . consult-line)
+    ([remap imenu] . consult-imenu)
+    ("C-c m" . consult-man)
+    ("C-c i" . consult-info)
+    ("M-g f" . consult-flymake))
+
+  (use-package consult
     :after org
     :bind (
-  	 ([remap switch-to-buffer] . consult-buffer)
-  	 ([remap yank-pop] . consult-yank-pop)
-  	 ([remap goto-line] . consult-goto-line)
-  	 ([remap isearch-forward] . consult-line)
-  	 ([remap imenu] . consult-imenu)
-  	 ("C-c m" . consult-man)
-  	 ("C-c i" . consult-info)
-  	 ("M-g f" . consult-flymake)
-  	 :map org-mode-map
-  	 ([remap imenu] . consult-org-heading)))
+           :map org-mode-map
+           ([remap imenu] . consult-org-heading)))
 #+end_src
 
 * Completion
