@@ -32,15 +32,6 @@ Adds melpa to package archives and require [[https://github.com/jwiegley/use-pac
     :defer t)
 #+end_src
 
-** diminish
-
-[[https://github.com/emacsmirror/diminish][diminish]] allows you to keep a mode working but not showing in the modeline.
-
-#+begin_src emacs-lisp
-  (use-package diminish
-    :ensure t)
-#+end_src
-
 * Better defaults
 
 Change startup screen.
@@ -207,8 +198,6 @@ Set emoji font, can be used with ~cape-emoji~.
     (org-image-actual-width '(500))
     :hook
     (org-mode . visual-line-mode))
-
-  (diminish 'visual-line-mode)
 #+end_src
 
 ** olivetti
@@ -218,7 +207,6 @@ Set emoji font, can be used with ~cape-emoji~.
 #+begin_src emacs-lisp
   (use-package olivetti
     :ensure t
-    :diminish
     :custom
     (olivetti-body-width 0.7)
     (olivetti-minimum-body-width 80)
@@ -261,7 +249,6 @@ Set emoji font, can be used with ~cape-emoji~.
 
 #+begin_src emacs-lisp
   (use-package which-key
-    :diminish
     :config
     (which-key-mode))
 #+end_src
