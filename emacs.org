@@ -81,10 +81,10 @@ Set font.
 Set theme.
 
 #+begin_src emacs-lisp
-  (use-package adwaita-dark-theme
+  (use-package ef-themes
     :ensure t
     :init
-    (load-theme 'adwaita-dark t))
+    (load-theme 'ef-owl t))
 #+end_src
 
 ** nerd-icons
