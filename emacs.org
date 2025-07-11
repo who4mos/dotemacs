@@ -619,3 +619,15 @@ Requirements:
     :ensure t
     :mode "sxhkdrc")
 #+end_src
+
+* pgmacs
+
+[[https://github.com/emarsden/pgmacs][pgmacs]] provides a postgresql interface for emacs.
+
+#+begin_src emacs-lisp
+  (use-package pg
+    :vc (:url "https://github.com/emarsden/pg-el.git"))
+
+  (use-package pgmacs
+    :vc (:url "https://github.com/emarsden/pgmacs.git"))
+#+end_src
