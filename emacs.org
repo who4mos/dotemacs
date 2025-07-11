@@ -534,15 +534,24 @@ The following snippet can be evaluated to install all langugage grammars seted a
      (html-ts-mode . emmet-mode))
 #+end_src
 
-** "Rebind" ace-window in html-ts-mode
+** Remove annoying key bindings whein in HTML
 
 By default, in html buffers ~M-o~ is binded to ~font-lock-fontify-block~, change it.
 
 #+begin_src emacs-lisp
   (use-package html-ts-mode
     :bind (
-  	 :map html-ts-mode-map
-  	      ("M-o" . ace-window)))
+  	     :map html-ts-mode-map
+  	     ("M-o" . ace-window)))
+#+end_src
+
+Same thing with ~sgml-slash~, unbind it.
+
+#+begin_src emacs-lisp
+  (use-package sgml-mode
+    :bind (
+           :map sgml-mode-map
+           ("/" . nil)))
 #+end_src
 
 * Tempel
