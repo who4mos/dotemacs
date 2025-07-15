@@ -433,16 +433,20 @@ Setup line numbers and electric pairing in prog modes.
     (add-to-list 'eglot-server-programs
   	           '((python-ts-mode) "pyright")
   	           '((c-ts-mode c++-ts-mode) "clangd"))
+
     (add-to-list 'eglot-server-programs
   	           '((js-ts-mode) "typescript-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
   	           '((html-ts-mode) "vscode-html-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
   	           '((css-ts-mode) "vscode-css-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs
+  	           '((csharp-ts-mode) "csharp-ls"))
     :hook
     (python-ts-mode . eglot-ensure)
     (c-ts-mode . eglot-ensure)
     (c++-ts-mode . eglot-ensure)
+    (csharp-ts-mode . eglot-ensure)
     (html-ts-mode . eglot-ensure)
     (css-ts-mode . eglot-ensure)
     (js-ts-mode . eglot-ensure))
@@ -475,6 +479,7 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
      '((python "https://github.com/tree-sitter/tree-sitter-python")
        (c "https://github.com/tree-sitter/tree-sitter-c")
        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+       (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
        (html "https://github.com/tree-sitter/tree-sitter-html")
        (css "https://github.com/tree-sitter/tree-sitter-css")
        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
@@ -484,6 +489,7 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
      '((python-mode . python-ts-mode)
        (c-mode . c-ts-mode)
        (c++-mode . c++-ts-mode)
+       (csharp-mode . csharp-ts-mode)
        (html-mode . html-ts-mode)
        (mhtml-mode . html-ts-mode)
        (css-mode . css-ts-mode)
