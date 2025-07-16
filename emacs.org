@@ -146,27 +146,28 @@ Set emoji font, can be used with ~cape-emoji~.
      t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
 #+end_src
 
-** moodline
+* Modeline
+
+[[https://github.com/seagle0128/doom-modeline][doom-modeline]] is a fancy and featureful modeline.
 
 #+begin_src emacs-lisp
-  (use-package mood-line
+  (use-package doom-modeline          
     :ensure t
-    :config
-    (mood-line-mode)
     :custom
-    (mood-line-format
-     (mood-line-defformat
-      :left
-      (((mood-line-segment-buffer-status) . " ")
-       ((mood-line-segment-buffer-name) . " - ")
-       ((mood-line-segment-cursor-position) . " ")
-       ((mood-line-segment-scroll) . "  ")
-       (mood-line-segment-major-mode))
-      :right
-      (((mood-line-segment-vc) . "  ")
-       ((mood-line-segment-misc-info) . "  ")
-       ((mood-line-segment-checker) . "  ")
-       ((mood-line-segment-process) . "  ")))))
+    (doom-modeline-minor-modes t)
+    :init
+    (doom-modeline-mode))
+#+end_src
+
+*** minions
+
+[[https://github.com/tarsius/minions][minions]] provides a menu to contain minor modes.
+
+#+begin_src emacs-lisp
+   (use-package minions
+     :ensure t
+     :init
+     (minions-mode))
 #+end_src
 
 * Orgmode
@@ -284,10 +285,10 @@ Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][
 
 #+begin_src emacs-lisp
   (use-package ace-window
-    :ensure t
-    :bind
-    ("C-x o" . nil)
-    ("M-o" . ace-window))
+      :ensure t
+      :bind
+      ("C-x o" . nil)
+      ("M-o" . ace-window))
 #+end_src
 
 * Ibuffer
