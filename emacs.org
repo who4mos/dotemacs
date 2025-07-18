@@ -81,10 +81,14 @@ Set font.
 Set theme.
 
 #+begin_src emacs-lisp
-  (use-package ef-themes
+  (use-package uwu-theme
     :ensure t
     :init
-    (load-theme 'ef-owl t))
+    (setopt uwu-use-variable-pitch t
+            uwu-scale-org-headlines t
+            uwu-distinct-line-numbers nil)
+    :config
+    (load-theme 'uwu :no-confirm))
 #+end_src
 
 ** nerd-icons
