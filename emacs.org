@@ -264,8 +264,9 @@ Set dired switches.
 
 #+begin_src emacs-lisp
   (use-package dired
-    :defer t
+    :commands (dired)
     :custom
+    (dired-dwim-target t)
     (dired-listing-switches "-lAFhv --group-directories-first"))
 #+end_src
 
@@ -278,9 +279,11 @@ Set dired switches.
     :ensure t
     :after dired
     :bind (
-  	 :map dired-mode-map
-  	      ("<tab>" . dired-subtree-toggle)
-  	      ("TAB" . dired-subtree-toggle)))
+  	     :map dired-mode-map
+  	     ("<tab>" . dired-subtree-toggle)
+  	     ("TAB" . dired-subtree-toggle))
+    :custom
+    (dired-subtree-use-backgrounds nil))
 #+end_src
 
 * Window Movement
