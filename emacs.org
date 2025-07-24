@@ -398,7 +398,6 @@ Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][
     (corfu-auto t)
     (corfu-auto-prefix 2)
     (corfu-popupinfo-delay '(1.25 . 0.5))
-    (text-mode-ispell-word-completion nil)
     :init
     (global-corfu-mode)
     :config
@@ -613,4 +612,30 @@ Requirements:
 
   (use-package pgmacs
     :vc (:url "https://github.com/emarsden/pgmacs.git"))
+#+end_src
+
+* Writing
+
+[[https://github.com/minad/jinx][jinx]] is a fast spell checker for emacs, it relies on the [[https://rrthomas.github.io/enchant/][enchant]] library.
+
+#+begin_src emacs-lisp
+  (use-package jinx
+    :ensure t
+    :bind
+    ("M-$" . jinx-correct)
+    ("C-M-$" . jinx-languages)
+    :custom
+    (jinx-languages "pt_BR en_US")
+    :hook
+    (emacs-startup . global-jinx-mode))
+#+end_src
+
+[[https://github.com/eliascotto/accent][accent]] provides a popup with accented versions of the character at point.
+
+#+begin_src emacs-lisp
+  (use-package accent
+    :ensure t
+    :commands (accent-corfu)
+    :bind
+    ("C-x C-a" . accent-corfu))
 #+end_src

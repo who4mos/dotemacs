@@ -13,7 +13,8 @@ Besides that, the config requires:
 - [[https://github.com/source-foundry/Hack][Hack]] and [[https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack][Hack Nerd]] Fonts
 - [[https://fonts.google.com/noto/specimen/Noto+Color+Emoji][Noto Color Emoji]] Font (emojis 🥳)
 - ~tree-sitter~
-- ~cmake~, ~libtool~ and ~libvterm~ for vterm
+- ~cmake~, ~libtool~ and ~libvterm~ (vterm)
+- ~enchant~ and ~pkgconf~ (jinx)
 
 ** Building from source
 
@@ -43,6 +44,10 @@ Then open the [[file:emacs.org][emacs.org]] file in emacs and tangle it (~C-c C-
 - Javascript: ~typescript-language-server~
 - HTML and CSS: ~vscode-langservers-extracted~
 - Java: ~jdtls~
+
+** Spell Checkers
+
+I'm using [[http://aspell.net/][aspell]] for english and [[https://github.com/hunspell/hunspell][hunspell]] for portuguese.
 
 * BSPWM
 
