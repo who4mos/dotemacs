@@ -628,7 +628,7 @@ Requirements:
     :custom
     (jinx-languages "pt_BR en_US")
     :hook
-    (emacs-startup . global-jinx-mode))
+    (text-mode . jinx-mode))
 #+end_src
 
 [[https://github.com/eliascotto/accent][accent]] provides a popup with accented versions of the character at point.
