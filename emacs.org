@@ -41,15 +41,7 @@ Change startup screen.
   (setopt initial-scratch-message "")
 #+end_src
 
-Remove bars.
-
-#+begin_src emacs-lisp
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
-#+end_src
-
-Enable column numbers on mode line, change the typing behaviour when a region is selected and remember recently opened files.
+Enable column numbers on mode line, change the typing behavior when a region is selected and remember recently opened files.
 
 #+begin_src emacs-lisp
   (column-number-mode t)
@@ -70,7 +62,26 @@ Always use tabs.
   (setopt tab-width 4)
 #+end_src
 
-* Beautifying
+replace
+
+#+begin_src emacs-lisp
+  (use-package ibuffer
+    :bind (
+           ("C-x C-b" . ibuffer)
+           ;; ([remap list-buffers] . ibuffer)
+           :map ibuffer-mode-map
+           ("M-o" . ace-window)))
+#+end_src
+
+* UI
+
+Remove bars.
+
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+#+end_src
 
 Set font.
 
@@ -150,9 +161,9 @@ Set emoji font, can be used with ~cape-emoji~.
      t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
 #+end_src
 
-* Modeline
+** Mode Line
 
-[[https://github.com/seagle0128/doom-modeline][doom-modeline]] is a fancy and featureful modeline.
+[[https://github.com/seagle0128/doom-modeline][doom-modeline]] is a fancy and featureful mode-line.
 
 #+begin_src emacs-lisp
   (use-package doom-modeline          
@@ -174,61 +185,29 @@ Set emoji font, can be used with ~cape-emoji~.
      (minions-mode))
 #+end_src
 
-* Orgmode
+* Window Movement
+
+Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][ace-window]] to ~M-o~.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :bind
-    ("C-c l" . org-store-link)
-    ("C-c a" . org-agenda)
-    ("C-c c" . org-capture)
-    :custom
-    ;; agenda
-    (org-directory "~/org/")
-    (org-agenda-files (list org-directory))
-    (org-log-done 'time)
-    (org-log-into-drawer t)
-    ;; tags
-    (org-tags-column 0)
-    (org-auto-align-tags nil)
-    ;; archive
-    (org-archive-location "~/org/archive/%s_archive::")
-    ;; structural editing
-    (org-special-ctrl-a/e t)
-    (org-special-ctrl-k t)
-    ;; style
-    (org-hide-emphasis-markers t)
-    ;; images
-    (org-startup-with-inline-images t)
-    (org-image-actual-width '(500))
-    :hook
-    (org-mode . visual-line-mode))
+  (use-package ace-window
+      :ensure t
+      :bind
+      ("C-x o" . nil)
+      ("M-o" . ace-window))
 #+end_src
 
-** olivetti
+* Navigation
 
-[[https://github.com/rnkn/olivetti][olivetti]] keeps text in the middle of the window.
+[[https://github.com/abo-abo/avy][avy]] allows you to jump to visible text using a char decision tree.
 
 #+begin_src emacs-lisp
-  (use-package olivetti
+  (use-package avy
     :ensure t
     :custom
-    (olivetti-body-width 0.7)
-    (olivetti-minimum-body-width 80)
-    :hook
-    (org-mode . olivetti-mode))
-#+end_src
-
-* Magit
-
-[[https://github.com/magit/magit][magit]] is a git interface inside emacs.
-
-#+begin_src emacs-lisp
-  (use-package magit
-    :ensure t
-    :commands (magit-status)
+    (avy-timeout-seconds 0.3)
     :bind
-    ("C-x g" . magit-status))
+    ("M-s" . avy-goto-char-timer))
 #+end_src
 
 * Helpful Information
@@ -286,39 +265,61 @@ Set dired switches.
     (dired-subtree-use-backgrounds nil))
 #+end_src
 
-* Window Movement
-
-Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][ace-window]] to ~M-o~.
+* Org Mode
 
 #+begin_src emacs-lisp
-  (use-package ace-window
-      :ensure t
-      :bind
-      ("C-x o" . nil)
-      ("M-o" . ace-window))
+  (use-package org
+    :bind
+    ("C-c l" . org-store-link)
+    ("C-c a" . org-agenda)
+    ("C-c c" . org-capture)
+    :custom
+    ;; agenda
+    (org-directory "~/org/")
+    (org-agenda-files (list org-directory))
+    (org-log-done 'time)
+    (org-log-into-drawer t)
+    ;; tags
+    (org-tags-column 0)
+    (org-auto-align-tags nil)
+    ;; archive
+    (org-archive-location "~/org/archive/%s_archive::")
+    ;; structural editing
+    (org-special-ctrl-a/e t)
+    (org-special-ctrl-k t)
+    ;; style
+    (org-hide-emphasis-markers t)
+    ;; images
+    (org-startup-with-inline-images t)
+    (org-image-actual-width '(500))
+    :hook
+    (org-mode . visual-line-mode))
 #+end_src
 
-* Ibuffer
+** olivetti
+
+[[https://github.com/rnkn/olivetti][olivetti]] keeps text in the middle of the window.
 
 #+begin_src emacs-lisp
-  (use-package ibuffer
-    :bind (
-           ("C-x C-b" . ibuffer)
-           :map ibuffer-mode-map
-           ("M-o" . ace-window)))
-#+end_src
-
-* Navigation
-
-[[https://github.com/abo-abo/avy][avy]] allows you to jump to visible text using a char decision tree.
-
-#+begin_src emacs-lisp
-  (use-package avy
+  (use-package olivetti
     :ensure t
     :custom
-    (avy-timeout-seconds 0.3)
+    (olivetti-body-width 0.7)
+    (olivetti-minimum-body-width 80)
+    :hook
+    (org-mode . olivetti-mode))
+#+end_src
+
+* Magit
+
+[[https://github.com/magit/magit][magit]] is a git interface inside emacs.
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t
+    :commands (magit-status)
     :bind
-    ("M-s" . avy-goto-char-timer))
+    ("C-x g" . magit-status))
 #+end_src
 
 * Minibuffer
@@ -406,7 +407,7 @@ Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][
 
 *** Cape
 
-[[https://github.com/minad/cape][Cape]] provies Completion At Point Extensions.
+[[https://github.com/minad/cape][Cape]] provides Completion At Point Extensions.
 
 #+begin_src emacs-lisp
   (use-package cape
@@ -416,7 +417,7 @@ Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][
     (add-to-list 'completion-at-point-functions #'cape-elisp-block))
 #+end_src
 
-* Programming
+* Development
 
 Setup line numbers and electric pairing in prog modes.
 
@@ -505,7 +506,7 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
        (java-mode . java-ts-mode))))
 #+end_src
 
-The following snippet can be evaluated to install all langugage grammars seted above, it will not be tangled to the ~init.el~ file.
+The following snippet can be evaluated to install all language grammars seted above, it will not be tangled to the ~init.el~ file.
 
 #+begin_src emacs-lisp :tangle no
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
@@ -536,7 +537,7 @@ The following snippet can be evaluated to install all langugage grammars seted a
     ((python-ts-mode c-ts-mode c++-ts-mode html-ts-mode css-ts-mode js-ts-mode java-ts-mode) . indent-bars-mode))
 #+end_src
 
-** Emmet
+** Web
 
 [[https://github.com/smihica/emmet-mode][emmet-mode]] allows you to use emmet in emacs.
 
@@ -547,9 +548,7 @@ The following snippet can be evaluated to install all langugage grammars seted a
      (html-ts-mode . emmet-mode))
 #+end_src
 
-** Remove annoying key bindings whein in HTML
-
-By default, in html buffers ~M-o~ is binded to ~font-lock-fontify-block~, change it.
+By default, in HTML buffers ~M-o~ is binded to ~font-lock-fontify-block~, change it.
 
 #+begin_src emacs-lisp
   (use-package html-ts-mode
@@ -565,6 +564,18 @@ Same thing with ~sgml-slash~, unbind it.
     :bind (
            :map sgml-mode-map
            ("/" . nil)))
+#+end_src
+
+** pgmacs
+
+[[https://github.com/emarsden/pgmacs][pgmacs]] provides a PostgreSQL interface for emacs.
+
+#+begin_src emacs-lisp
+  (use-package pg
+    :vc (:url "https://github.com/emarsden/pg-el.git"))
+
+  (use-package pgmacs
+    :vc (:url "https://github.com/emarsden/pgmacs.git"))
 #+end_src
 
 * vterm
@@ -596,22 +607,12 @@ Requirements:
 
 * sxhkdrc
 
+[[https://github.com/protesilaos/sxhkdrc-mode][sxhkdrc-mode]] is a major mode for editing ~sxhkdrc~ files, which i use with bspwm.
+
 #+begin_src emacs-lisp
   (use-package sxhkdrc-mode
     :ensure t
     :mode "sxhkdrc")
-#+end_src
-
-* pgmacs
-
-[[https://github.com/emarsden/pgmacs][pgmacs]] provides a postgresql interface for emacs.
-
-#+begin_src emacs-lisp
-  (use-package pg
-    :vc (:url "https://github.com/emarsden/pg-el.git"))
-
-  (use-package pgmacs
-    :vc (:url "https://github.com/emarsden/pgmacs.git"))
 #+end_src
 
 * Writing
