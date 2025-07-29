@@ -83,10 +83,11 @@ Remove bars.
   (scroll-bar-mode -1)
 #+end_src
 
-Set font.
+Set fonts.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Hack Nerd Font" :height 120)
+  (set-face-attribute 'default nil :font "Iosevka Extended" :height 120)
+  (set-face-attribute 'variable-pitch nil :font "Iosevka Aile" :height 1.2)
 #+end_src
 
 Set theme.
@@ -102,15 +103,13 @@ Set theme.
     (load-theme 'uwu :no-confirm))
 #+end_src
 
-** nerd-icons
+** nerd-icons 
 
 [[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons]] allows you to use [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]] in emacs.
 
 #+begin_src emacs-lisp
   (use-package nerd-icons
-    :ensure t
-    :custom
-    (nerd-icons-font-family "Hack Nerd Font"))
+    :ensure t)
 #+end_src
 
 [[https://github.com/rainstormstudio/nerd-icons-dired][nerd-icons-dired]] adds nerd icons to [[* Dired][dired]].
