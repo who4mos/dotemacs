@@ -87,7 +87,7 @@ Set fonts.
 
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil :font "Iosevka Extended" :height 120)
-  (set-face-attribute 'variable-pitch nil :font "Iosevka Aile" :height 1.2)
+  (set-face-attribute 'variable-pitch nil :font "Iosevka Aile" :weight 'light :height 1.2)
 #+end_src
 
 Set theme.
