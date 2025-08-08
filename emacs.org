@@ -1,7 +1,6 @@
 #+author: who4mos
 #+title: My emacs config
 #+property: header-args :tangle ~/.config/emacs/init.el
-#+startup: overview
 
 * Lexical Binding
 
@@ -13,7 +12,7 @@ Use [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Selecting-Lisp-D
 
 * Packages setup
 
-Adds melpa to package archives and require [[https://github.com/jwiegley/use-package][use-package]].
+Adds melpa to package archives and require ~use-package~.
 
 #+begin_src emacs-lisp
   (require 'package)
@@ -34,73 +33,71 @@ Adds melpa to package archives and require [[https://github.com/jwiegley/use-pac
 
 * Better defaults
 
-Change startup screen.
+Activate some convenient modes and set some variables.
 
 #+begin_src emacs-lisp
-  (setopt inhibit-startup-screen t)
-  (setopt initial-scratch-message "")
+  (use-package emacs
+  :custom
+  ;; usefull global modes
+  (recentf-mode t)          ; saves opened files history
+  (savehist-mode t)         ; saves minibuffer history
+  (winner-mode t)           ; records window changes and can undo them
+  (column-number-mode t)    ; show column number in mode line
+  (which-key-mode t)        ; displays possible following key bindings
+  (delete-selection-mode t) ; typing replaces text if in a region
+  ;; backups
+  (backup-directory-alist   ; set backup directory
+  `(("." . ,(concat user-emacs-directory ".backups"))))
+  ;; bars
+  (tool-bar-mode nil)                   ; turn off tool bar
+  (menu-bar-mode nil)                   ; turn off menu bar
+  (scroll-bar-mode nil)                 ; turn off scroll bar
+  ;; initial screen
+  (inhibit-startup-screen t)            ; don't display startup screen
+  (initial-scratch-message "")          ; start scratch buffer empty
+  ;; indentation/completion
+  (indent-tabs-mode nil)         ; indentation inserts spaces
+  (tab-width 4)                  ; distance between tab stops
+  (tab-always-indent 'complete)) ; first try to indent, then try to complete
 #+end_src
 
-Enable column numbers on mode line, change the typing behavior when a region is selected and remember recently opened files.
+Specify how to name buffers with the same name (e.g.: ~dev/test~ & ~bin/test~).
 
 #+begin_src emacs-lisp
-  (column-number-mode t)
-  (delete-selection-mode t)
-  (recentf-mode t)
-#+end_src
-
-Enable ~file-name-shadow-mode~.
-
-#+begin_src emacs-lisp
-  (file-name-shadow-mode t)
-#+end_src
-
-Always use tabs.
-
-#+begin_src emacs-lisp
-  (setopt indent-tabs-mode nil)
-  (setopt tab-width 4)
-#+end_src
-
-replace
-
-#+begin_src emacs-lisp
-  (use-package ibuffer
-    :bind (
-           ("C-x C-b" . ibuffer)
-           ;; ([remap list-buffers] . ibuffer)
-           :map ibuffer-mode-map
-           ("M-o" . ace-window)))
+  (use-package uniquify
+    :custom
+    (uniquify-buffer-name-style 'forward))
 #+end_src
 
 * UI
 
-Remove bars.
+Set mono-spaced and variable-pitch fonts
 
 #+begin_src emacs-lisp
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
+    (set-face-attribute 'default nil :family "Iosevka Extended" :height 120)
+    (set-face-attribute 'fixed-pitch nil :family "Iosevka Extended" :height 1.0)
+    (set-face-attribute 'variable-pitch nil :family "Iosevka Aile" :height 1.0)
 #+end_src
 
-Set fonts.
+Set and configure [[https://protesilaos.com/emacs/ef-themes][εὖ-themes]].
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Iosevka Extended" :height 120)
-  (set-face-attribute 'variable-pitch nil :font "Iosevka Aile" :weight 'light :height 1.2)
-#+end_src
-
-Set theme.
-
-#+begin_src emacs-lisp
-  (use-package uwu-theme
+  (use-package ef-themes
     :ensure t
-    :init
-    (setopt uwu-use-variable-pitch t
-            uwu-scale-org-headlines t
-            uwu-distinct-line-numbers nil)
-    :config
-    (load-theme 'uwu :no-confirm))
+    :custom
+    (ef-themes-mixed-fonts t)
+    (ef-themes-headings
+      '((0 variable-pitch light 1.8)
+        (1 variable-pitch light 1.7)
+        (2 variable-pitch regular 1.6)
+        (3 variable-pitch regular 1.5)
+        (4 variable-pitch regular 1.4)
+        (5 variable-pitch 1.3)
+        (6 variable-pitch 1.2)
+        (7 variable-pitch 1.15)
+        (t variable-pitch 1.1)))
+     :config
+     (load-theme 'ef-elea-dark :no-confirm))
 #+end_src
 
 ** nerd-icons 
@@ -150,68 +147,23 @@ Set theme.
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 #+end_src
 
-** emojis
+* ibuffer
 
-Set emoji font, can be used with ~cape-emoji~.
-
-#+begin_src emacs-lisp
-  (when (member "Noto Color Emoji" (font-family-list))
-    (set-fontset-font
-     t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
-#+end_src
-
-** Mode Line
-
-[[https://github.com/seagle0128/doom-modeline][doom-modeline]] is a fancy and featureful mode-line.
+Use ~ibuffer~ instead off default ~list-buffers~, also configure for ace-window to work with it.
 
 #+begin_src emacs-lisp
-  (use-package doom-modeline          
-    :ensure t
-    :custom
-    (doom-modeline-minor-modes t)
-    :init
-    (doom-modeline-mode))
-#+end_src
-
-*** minions
-
-[[https://github.com/tarsius/minions][minions]] provides a menu to contain minor modes.
-
-#+begin_src emacs-lisp
-   (use-package minions
-     :ensure t
-     :init
-     (minions-mode))
-#+end_src
-
-* Window Movement
-
-Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][ace-window]] to ~M-o~.
-
-#+begin_src emacs-lisp
-  (use-package ace-window
-      :ensure t
-      :bind
-      ("C-x o" . nil)
-      ("M-o" . ace-window))
-#+end_src
-
-* Navigation
-
-[[https://github.com/abo-abo/avy][avy]] allows you to jump to visible text using a char decision tree.
-
-#+begin_src emacs-lisp
-  (use-package avy
-    :ensure t
-    :custom
-    (avy-timeout-seconds 0.3)
+  (use-package ibuffer
     :bind
-    ("M-s" . avy-goto-char-timer))
+    ([remap list-buffers] . ibuffer)) ; replace list-buffers with ibuffer
+
+  (use-package ibuffer
+    :after ace-window
+    :bind (
+           :map ibuffer-mode-map
+           ("M-o" . ace-window))) ; remap M-o to ace-window within ibuffer
 #+end_src
 
-* Helpful Information
-
-** Helpful
+* Helpful
 
 [[https://github.com/Wilfred/helpful][Helpful]] is an alternative to emacs built-in help commands that provides more information.
 
@@ -226,19 +178,9 @@ Unbind default ~other-window~ and bind [[https://github.com/abo-abo/ace-window][
     ([remap describe-symbol] . helpful-symbol))
 #+end_src
 
-** which-key
-
-~which-key~ display key bindings following your current prefix command, it is now (emacs >= 30.1) built-in.
-
-#+begin_src emacs-lisp
-  (use-package which-key
-    :config
-    (which-key-mode))
-#+end_src
-
 * Dired
 
-Set dired switches.
+Configure dired.
 
 #+begin_src emacs-lisp
   (use-package dired
@@ -264,90 +206,19 @@ Set dired switches.
     (dired-subtree-use-backgrounds nil))
 #+end_src
 
-* Org Mode
+* Window movement
+
+[[https://github.com/abo-abo/ace-window][ace-window]], bind it to ~M-o~ and unbind the default ~other-window~.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :bind
-    ("C-c l" . org-store-link)
-    ("C-c a" . org-agenda)
-    ("C-c c" . org-capture)
-    :custom
-    ;; agenda
-    (org-directory "~/org/")
-    (org-agenda-files (list org-directory))
-    (org-log-done 'time)
-    (org-log-into-drawer t)
-    ;; tags
-    (org-tags-column 0)
-    (org-auto-align-tags nil)
-    ;; archive
-    (org-archive-location "~/org/archive/%s_archive::")
-    ;; structural editing
-    (org-special-ctrl-a/e t)
-    (org-special-ctrl-k t)
-    ;; style
-    (org-hide-emphasis-markers t)
-    ;; images
-    (org-startup-with-inline-images t)
-    (org-image-actual-width '(500))
-    :hook
-    (org-mode . visual-line-mode))
+  (use-package ace-window
+      :ensure t
+      :bind
+      ("C-x o" . nil)
+      ("M-o" . ace-window))
 #+end_src
 
-** olivetti
-
-[[https://github.com/rnkn/olivetti][olivetti]] keeps text in the middle of the window.
-
-#+begin_src emacs-lisp
-  (use-package olivetti
-    :ensure t
-    :custom
-    (olivetti-body-width 0.7)
-    (olivetti-minimum-body-width 80)
-    :hook
-    (org-mode . olivetti-mode))
-#+end_src
-
-* Magit
-
-[[https://github.com/magit/magit][magit]] is a git interface inside emacs.
-
-#+begin_src emacs-lisp
-  (use-package magit
-    :ensure t
-    :commands (magit-status)
-    :bind
-    ("C-x g" . magit-status))
-#+end_src
-
-* Minibuffer
-
-** Vertico
-
-[[https://github.com/minad/vertico][Vertico]] provides a minimalist vertical completion UI based on the default completion system.
-
-#+begin_src emacs-lisp
-  (use-package vertico
-    :ensure t
-    :custom
-    (vertico-cycle t)
-    :init
-    (vertico-mode))
-#+end_src
-
-*** Marginalia
-
-[[https://github.com/minad/marginalia][Marginalia]] adds marginalia to minibuffer completions.
-
-#+begin_src emacs-lisp
-  (use-package marginalia
-    :ensure t
-    :init
-    (marginalia-mode))
-#+end_src
-
-* Consult
+* Search and navigation
 
 [[https://github.com/minad/consult][Consult]] provides search and navigation commands.
 
@@ -371,9 +242,44 @@ Set dired switches.
            ([remap imenu] . consult-org-heading)))
 #+end_src
 
-* Completion
+[[https://github.com/abo-abo/avy][avy]] helps with in buffer navigation, allowing you to jump to visible text using a char decision tree.
 
-** Completion style
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :custom
+    (avy-timeout-seconds 0.3)
+    :bind
+    ("M-s" . avy-goto-char-timer))
+#+end_src
+
+* Minibuffer
+
+[[https://github.com/minad/vertico][Vertico]] provides a minimalist vertical completion UI based on the default completion system.
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :ensure t
+    :custom
+    (enable-recursive-minibuffers t) ; use minibuffer while in minibuffer
+    (vertico-cycle t)           ; enable cycle for vertico next/previous
+    :init
+    (vertico-mode))
+#+end_src
+
+[[https://github.com/minad/marginalia][Marginalia]] adds marginalia to minibuffer completions.
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :ensure t
+    :bind (
+           :map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode))
+#+end_src
+
+* Completion
 
 [[https://github.com/oantolin/orderless][Orderless]] provides an *orderless* completion style. It divides the pattern in space separated components and match candidates that match those components in any order.
 
@@ -382,10 +288,9 @@ Set dired switches.
     :ensure t
     :custom
     (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles partial-completion)))))
+    (completion-category-defaults nil)
+    (completion-category-overrides nil))
 #+end_src
-
-** Corfu
 
 [[https://github.com/minad/corfu][Corfu]] enhances in-buffer completion with a small popup.
 
@@ -393,110 +298,108 @@ Set dired switches.
   (use-package corfu
     :ensure t
     :custom
-    (tab-always-indent 'complete)
-    (corfu-cycle t)
-    (corfu-auto t)
-    (corfu-auto-prefix 2)
-    (corfu-popupinfo-delay '(1.25 . 0.5))
+    (corfu-cycle t)                  ; enable cycling for candidates
+    (corfu-auto t)                   ; enable auto completion
+    (corfu-auto-prefix 2)            ; set auto completion minimum chars
+    (corfu-popupinfo-mode t)               ; enable popup info
+    (corfu-popupinfo-delay '(1 . 0.5))     ; set delay for the popup info
+    (text-mode-ispell-word-completion nil) ; disable ispell completion function
+    :bind (
+           ;; bind popup controls
+           :map corfu-map
+           ("M-p" . corfu-popupinfo-scroll-down)
+           ("M-n" . corfu-popupinfo-scroll-up)
+           ("M-d" . corfu-popupinfo-toggle))
     :init
-    (global-corfu-mode)
-    :config
-    (corfu-popupinfo-mode t))
+    (global-corfu-mode)) ; enable corfu globally
 #+end_src
 
-*** Cape
 
-[[https://github.com/minad/cape][Cape]] provides Completion At Point Extensions.
 
 #+begin_src emacs-lisp
   (use-package cape
     :ensure t
+    :bind
+    ("C-c p" . cape-prefix-map)
     :init
-    (add-to-list 'completion-at-point-functions #'cape-file)
-    (add-to-list 'completion-at-point-functions #'cape-elisp-block))
+    (add-hook 'completion-at-point-functions #'cape-file)
+    (add-hook 'completion-at-point-functions #'cape-elisp-block))
+#+end_src
+
+* Org Mode
+
+Configure org mode defaults.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :bind
+    ("C-c l" . org-store-link)
+    ("C-c a" . org-agenda)
+    ("C-c c" . org-capture)
+    :custom
+    (org-directory "~/org/")
+    (org-agenda-files (list org-directory))
+    (org-log-done 'time)
+    (org-log-into-drawer t)
+    (org-special-ctrl-a/e t)
+    (org-special-ctrl-k t)
+    (org-hide-emphasis-markers t)
+    :hook
+    (org-mode . visual-line-mode)
+    (org-mode . variable-pitch-mode))
+#+end_src
+
+** olivetti
+
+[[https://github.com/rnkn/olivetti][olivetti]] keeps text in the middle of the window.
+
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :ensure t
+    :custom
+    (olivetti-body-width 0.7)
+    (olivetti-minimum-body-width 80)
+    :hook
+    (org-mode . olivetti-mode))
 #+end_src
 
 * Development
 
-Setup line numbers and electric pairing in prog modes.
+Set some defaults in programming modes.
 
 #+begin_src emacs-lisp
   (use-package emacs
     :hook
-    (prog-mode . display-line-numbers-mode)
-    (prog-mode . electric-pair-mode))
-#+end_src
-
-** eglot
-
-[[https://github.com/joaotavora/eglot][Eglot]] is the emacs client for the LSP.
-
-#+begin_src emacs-lisp
-  (use-package eglot
-    :custom
-    (completion-category-overrides '((eglot (styles orderless))
-                                     (eglot-capf (styles orderless))))
-    :config
-    (add-to-list 'eglot-server-programs
-  	           '((python-ts-mode) "pyright")
-  	           '((c-ts-mode c++-ts-mode) "clangd"))
-
-    (add-to-list 'eglot-server-programs
-  	           '((js-ts-mode) "typescript-language-server" "--stdio"))
-    (add-to-list 'eglot-server-programs
-  	           '((html-ts-mode) "vscode-html-language-server" "--stdio"))
-    (add-to-list 'eglot-server-programs
-  	           '((css-ts-mode) "vscode-css-language-server" "--stdio"))
-    (add-to-list 'eglot-server-programs
-  	           '((csharp-ts-mode) "csharp-ls"))
-    :hook
-    (python-ts-mode . eglot-ensure)
-    (c-ts-mode . eglot-ensure)
-    (c++-ts-mode . eglot-ensure)
-    (csharp-ts-mode . eglot-ensure)
-    (html-ts-mode . eglot-ensure)
-    (css-ts-mode . eglot-ensure)
-    (js-ts-mode . eglot-ensure))
-#+end_src
-
-*** eglot-java
-
-
-[[https://github.com/yveszoundi/eglot-java][eglot-java]] automatically sets up the Eclipse JDT language server.
-
-#+begin_src emacs-lisp
-  (use-package eglot-java
-    :ensure t
-    :hook
-    (java-ts-mode . eglot-java-mode))
+    (prog-mode . display-line-numbers-mode) ; diplay line numbers
+    (prog-mode . electric-pair-mode)        ; auto pair pairing
+    (prog-mode . subword-mode))             ; subword movement and editing
 #+end_src
 
 ** tree-sitter
 
 [[https://tree-sitter.github.io/tree-sitter/][Tree-sitter]] is a parser generator tool and incremental parser lib. Since version 29, emacs can be built with tree sitter support.
 
-The snippet sets langugage grammars and major mode remaps for the langugages i use.
+The snippet sets language grammars and major mode remaps for the languages i use.
 
 #+begin_src emacs-lisp
   (use-package treesit
     :custom
-    (treesit-font-lock-level 4)
-    
-    (treesit-language-source-alist
+    (treesit-font-lock-level 4)           ; max font lock level
+    ;; languagues to install
+    (treesit-language-source-alist     
      '((python "https://github.com/tree-sitter/tree-sitter-python")
        (c "https://github.com/tree-sitter/tree-sitter-c")
        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-       (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
        (html "https://github.com/tree-sitter/tree-sitter-html")
        (css "https://github.com/tree-sitter/tree-sitter-css")
        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
        (java "https://github.com/tree-sitter/tree-sitter-java")))
 
+    ;; major modes to use
     (major-mode-remap-alist
      '((python-mode . python-ts-mode)
        (c-mode . c-ts-mode)
        (c++-mode . c++-ts-mode)
-       (csharp-mode . csharp-ts-mode)
        (html-mode . html-ts-mode)
        (mhtml-mode . html-ts-mode)
        (css-mode . css-ts-mode)
@@ -505,7 +408,7 @@ The snippet sets langugage grammars and major mode remaps for the langugages i u
        (java-mode . java-ts-mode))))
 #+end_src
 
-The following snippet can be evaluated to install all language grammars seted above, it will not be tangled to the ~init.el~ file.
+The following snippet can be evaluated to install all language grammars specified above, it will not be tangled to the ~init.el~ file.
 
 #+begin_src emacs-lisp :tangle no
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
@@ -516,11 +419,53 @@ The following snippet can be evaluated to install all language grammars seted ab
 [[https://elpa.gnu.org/packages/expreg.html][Expreg]] increases selected region by semantic units using tree-sitter.
 
 #+begin_src emacs-lisp
-(use-package expreg
+  (use-package expreg
     :ensure t
     :bind
     ("C-=" . expreg-expand)
     ("C-+" . expreg-contract))
+#+end_src
+
+** eglot
+
+[[https://github.com/joaotavora/eglot][Eglot]] is the emacs client for the LSP.
+
+#+begin_src emacs-lisp
+  (use-package eglot
+                                          ;    :custom
+                                          ;    (completion-category-overrides '((eglot (styles orderless))
+                                          ;                                     (eglot-capf (styles orderless))))
+    :config
+    ;; setup servers
+    (add-to-list 'eglot-server-programs
+                 '((python-ts-mode) "pyright" "--stdio"))
+    (add-to-list 'eglot-server-programs
+                 '((c-ts-mode c++-ts-mode) "clangd"))
+    (add-to-list 'eglot-server-programs
+  	           '((js-ts-mode) "typescript-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs
+  	           '((html-ts-mode) "vscode-html-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs
+  	           '((css-ts-mode) "vscode-css-language-server" "--stdio"))
+    :hook
+    ;; start servers 
+    (python-ts-mode . eglot-ensure)
+    (c-ts-mode . eglot-ensure)
+    (c++-ts-mode . eglot-ensure)
+    (html-ts-mode . eglot-ensure)
+    (css-ts-mode . eglot-ensure)
+    (js-ts-mode . eglot-ensure))
+#+end_src
+
+*** eglot-java
+
+[[https://github.com/yveszoundi/eglot-java][eglot-java]] automatically sets up the Eclipse JDT language server.
+
+#+begin_src emacs-lisp
+  (use-package eglot-java
+    :ensure t
+    :hook
+    (java-ts-mode . eglot-java-mode))
 #+end_src
 
 ** Indentation bars
@@ -533,10 +478,10 @@ The following snippet can be evaluated to install all language grammars seted ab
     :custom
     (indent-bars-treesit-support t)
     :hook
-    ((python-ts-mode c-ts-mode c++-ts-mode html-ts-mode css-ts-mode js-ts-mode java-ts-mode) . indent-bars-mode))
-#+end_src
+    ((python-ts-mode c-ts-mode c++-ts-mode html-ts-mode css-ts-mode js-ts-mode) . indent-bars-mode))
+#+end_src 
 
-** Web
+** Web Development
 
 [[https://github.com/smihica/emmet-mode][emmet-mode]] allows you to use emmet in emacs.
 
@@ -547,48 +492,35 @@ The following snippet can be evaluated to install all language grammars seted ab
      (html-ts-mode . emmet-mode))
 #+end_src
 
-By default, in HTML buffers ~M-o~ is binded to ~font-lock-fontify-block~, change it.
+By default, in HTML buffers ~M-o~ is binded to ~font-lock-fontify-block~ change it to also call ~ace-window~. ~sgml-slash~ is also binded to ~/~ by default unbind it.
 
 #+begin_src emacs-lisp
   (use-package html-ts-mode
     :bind (
   	     :map html-ts-mode-map
-  	     ("M-o" . ace-window)))
-#+end_src
-
-Same thing with ~sgml-slash~, unbind it.
-
-#+begin_src emacs-lisp
-  (use-package sgml-mode
-    :bind (
-           :map sgml-mode-map
+  	     ("M-o" . ace-window)
            ("/" . nil)))
 #+end_src
 
-** pgmacs
+* Magit
 
-[[https://github.com/emarsden/pgmacs][pgmacs]] provides a PostgreSQL interface for emacs.
+[[https://github.com/magit/magit][magit]] is a git interface inside emacs.
 
 #+begin_src emacs-lisp
-  (use-package pg
-    :vc (:url "https://github.com/emarsden/pg-el.git"))
-
-  (use-package pgmacs
-    :vc (:url "https://github.com/emarsden/pgmacs.git"))
+  (use-package magit
+    :ensure t
+    :bind
+    ("C-x g" . magit-status))
 #+end_src
 
 * vterm
 
 [[https://github.com/akermu/emacs-libvterm][vterm]] is a fast and fully capable terminal emulator inside emacs.
 
-Requirements:
-- ~cmake~
-- ~libtool~
-- ~libvterm~
-
 #+begin_src emacs-lisp
   (use-package vterm
-    :ensure t)
+    :ensure t
+    :defer t)
 #+end_src
 
 ** multi vterm 
@@ -604,7 +536,7 @@ Requirements:
     ("C-;" . multi-vterm-dedicated-toggle))
 #+end_src
 
-* sxhkdrc
+* sxhkdrc-mode
 
 [[https://github.com/protesilaos/sxhkdrc-mode][sxhkdrc-mode]] is a major mode for editing ~sxhkdrc~ files, which i use with bspwm.
 
@@ -625,7 +557,7 @@ Requirements:
     ("M-$" . jinx-correct)
     ("C-M-$" . jinx-languages)
     :custom
-    (jinx-languages "pt_BR en_US")
+    (jinx-languages "en_US pt_BR")
     :hook
     (text-mode . jinx-mode))
 #+end_src
@@ -635,7 +567,6 @@ Requirements:
 #+begin_src emacs-lisp
   (use-package accent
     :ensure t
-    :commands (accent-corfu)
     :bind
     ("C-x C-a" . accent-corfu))
 #+end_src

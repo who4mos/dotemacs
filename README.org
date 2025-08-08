@@ -3,17 +3,17 @@
 
 * Emacs
 
-** Requirements
+This is my emacs config, it is not meant to work on any system, i'm using ~emacs 30.1~ at the moment.
 
-The config relies on features that are built-in in ~emacs >= 29~ (use-package, tree-sitter, eglot, ... ([[file:emacs.org::*which-key][which-key]] in ~emacs >= 30.1~))
+** Requirements
 
 There are a lot of packages required to build from source, in the next distro hopping session (or hopefully in a new computer) i'll write down all requirements. 
 
 Besides that, the config requires:
 - [[https://github.com/be5invis/Iosevka][Iosevka]] Font
-- [[https://fonts.google.com/noto/specimen/Noto+Color+Emoji][Noto Color Emoji]] Font (emojis 🥳)
+- [[https://fonts.google.com/noto/specimen/Noto+Color+Emoji][Noto Color Emoji]] Font (emojis 🥳) 
 - ~tree-sitter~
-- ~cmake~, ~libtool~ and ~libvterm~ (vterm)
+- ~cmake~, ~libtool~ and (optionally) ~libvterm~ (vterm)
 - ~enchant~ and ~pkgconf~ (jinx)
 
 ** Building from source
@@ -38,12 +38,11 @@ Then open the [[file:emacs.org][emacs.org]] file in emacs and tangle it (~C-c C-
 
 ** Language servers
 
-- Python: ~pyright~
-- C: ~clangd~
-- C#: ~csharp-ls~
-- Javascript: ~typescript-language-server~
-- HTML and CSS: ~vscode-langservers-extracted~
-- Java: ~jdtls~
+- Python: [[https://microsoft.github.io/pyright/#/][pyright]]
+- C: [[https://clang.llvm.org/extra/clangd.html][clangd]]
+- Javascript: [[https://github.com/theia-ide/typescript-language-server][typescript-language-server]]
+- HTML and CSS: [[https://github.com/hrsh7th/vscode-langservers-extracted][vscode-langservers-extracted]]
+- Java: [[https://github.com/eclipse/eclipse.jdt.ls][jdtls]]
 
 ** Spell Checkers
 
@@ -70,7 +69,7 @@ The bspwm configuration is stored in ~/.config/bspwm/bspwmrc~, you need to creat
 
 ** sxhkd
 
-[[https://github.com/baskerville/sxhkd][sxhkd]] handles input for bspwm, the configuaration file is stored in ~/.config/sxhkd/sxhkdrc~, you also need to create the directory and link the configuartion file.
+[[https://github.com/baskerville/sxhkd][sxhkd]] handles input for bspwm, the configuration file is stored in ~/.config/sxhkd/sxhkdrc~, you also need to create the directory and link the configuration file.
 
 #+begin_src sh
   mkdir -p ~/.config/sxhkd
@@ -81,7 +80,7 @@ The bspwm configuration is stored in ~/.config/bspwm/bspwmrc~, you need to creat
 
 [[https://github.com/polybar/polybar][polybar]] is an easy to configure status bar.
 
-The *polybar* directory in this repo contains the configuation file ([[file:polybar/config.ini][config.ini]]) and the launch script ([[file:polybar/launch.sh][launch.sh]]) that is called inside BSPWM's config file. You need to link the directory to ~~/.config/polybar~ and change permissions to execute the script.
+The *polybar* directory in this repo contains the configuration file ([[file:polybar/config.ini][config.ini]]) and the launch script ([[file:polybar/launch.sh][launch.sh]]) that is called inside BSPWM's config file. You need to link the directory to ~~/.config/polybar~ and change permissions to execute the script.
 
 #+begin_src sh
   ln -s ~/.dotfiles/polybar ~/.config/polybar
